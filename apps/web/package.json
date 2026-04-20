@@ -1,0 +1,49 @@
+{
+  "name": "web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "pnpm run build && wrangler pages deploy dist --project-name=money-transfer-web",
+    "deploy:staging": "pnpm run build && wrangler pages deploy dist --project-name=money-transfer-web --branch staging",
+    "deploy:prod": "pnpm run build && wrangler pages deploy dist --project-name=money-transfer-web --branch main",
+    "test:e2e": "playwright test",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "devtools": "autotel-devtools -p 4319"
+  },
+  "dependencies": {
+    "autotel-web": "^1.11.1",
+    "posthog-js": "^1.369.3",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.11.2",
+    "@chromatic-com/storybook": "^5.1.2",
+    "@playwright/test": "^1.59.1",
+    "@storybook/addon-a11y": "^10.3.5",
+    "@storybook/addon-docs": "^10.3.5",
+    "@storybook/addon-mcp": "^0.6.0",
+    "@storybook/addon-vitest": "^10.3.5",
+    "@storybook/react-vite": "^10.3.5",
+    "@tailwindcss/vite": "^4.2.2",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "@vitest/browser-playwright": "^4.1.4",
+    "@vitest/coverage-v8": "^4.1.4",
+    "autotel-devtools": "^1.0.2",
+    "executable-stories-playwright": "^8.2.5",
+    "playwright": "^1.59.1",
+    "react-grab": "^0.1.32",
+    "storybook": "^10.3.5",
+    "tailwindcss": "^4.2.2",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.9",
+    "vitest": "^4.1.4",
+    "wrangler": "^4.83.0"
+  }
+}

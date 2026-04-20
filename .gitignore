@@ -1,0 +1,16 @@
+node_modules
+dist
+.turbo
+*.log
+.env
+.env.*
+test-results
+screenshots
+.DS_Store
+.autotel-cache
+
+*storybook.log
+storybook-static
+**/.wrangler
+**/.wrangler-deploy
+.env

@@ -1,0 +1,33 @@
+{
+  "name": "money-transfer",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.0.0",
+  "scripts": {
+    "dev": "turbo run dev",
+    "dev:api": "turbo run dev --filter=api",
+    "dev:web": "turbo run dev --filter=web",
+    "build": "turbo run build",
+    "plan:staging": "wd plan --stage staging",
+    "plan:prod": "wd plan --stage production",
+    "apply:staging": "wd apply --stage staging",
+    "apply:prod": "wd apply --stage production",
+    "deploy": "pnpm run deploy:staging",
+    "deploy:api": "wd deploy --stage staging --verify",
+    "deploy:web": "turbo run deploy --filter=web",
+    "deploy:web:staging": "turbo run deploy:staging --filter=web",
+    "deploy:web:prod": "turbo run deploy:prod --filter=web",
+    "deploy:staging": "pnpm run apply:staging && wd deploy --stage staging --verify && pnpm run deploy:web:staging",
+    "deploy:prod": "pnpm run apply:prod && wd deploy --stage production --verify && pnpm run deploy:web:prod",
+    "wd": "node scripts/wd.mjs",
+    "lint": "vp lint",
+    "format": "vp fmt"
+  },
+  "devDependencies": {
+    "turbo": "^2.9.6",
+    "typescript": "^6.0.3",
+    "vite-plus": "^0.1.18",
+    "wrangler": "^4.83.0",
+    "wrangler-deploy": "^1.4.2"
+  }
+}

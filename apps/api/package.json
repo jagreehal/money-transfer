@@ -1,0 +1,32 @@
+{
+  "name": "api",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "build": "tsc --noEmit",
+    "deploy": "pnpm --dir ../.. wd deploy --stage staging --verify",
+    "deploy:staging": "pnpm --dir ../.. wd apply --stage staging && pnpm --dir ../.. wd deploy --stage staging --verify",
+    "deploy:prod": "pnpm --dir ../.. wd apply --stage production && pnpm --dir ../.. wd deploy --stage production --verify",
+    "test": "vitest run",
+    "traffic": "tsx scripts/traffic.ts"
+  },
+  "dependencies": {
+    "@effect/opentelemetry": "^0.63.0",
+    "autotel": "^2.26.2",
+    "autotel-cloudflare": "^2.18.5",
+    "autotel-edge": "^3.16.4",
+    "effect": "^3.21.1",
+    "hono": "^4.12.14"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260420.1",
+    "@types/node": "^25",
+    "executable-stories-vitest": "^8.1.9",
+    "msw": "^2.13.4",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.4",
+    "wrangler": "^4.83.0"
+  }
+}

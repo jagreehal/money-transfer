@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "linear-server": {
+      "type": "http",
+      "url": "https://mcp.linear.app/mcp"
+    },
+    "autotel": {
+      "command": "npx",
+      "args": ["autotel-mcp"],
+      "env": {
+        "AUTOTEL_BACKEND": "jaeger",
+        "JAEGER_BASE_URL": "http://localhost:16686"
+      }
+    }
+  }
+}

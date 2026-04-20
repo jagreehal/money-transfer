@@ -1,0 +1,3953 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-detail-level="full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Money Transfer API Stories</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" media="(prefers-color-scheme: dark)">
+  <style>
+/* ============================================================================
+   Google Fonts Import - IBM Plex for refined typography
+   ============================================================================ */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+/* ============================================================================
+   CSS Custom Properties - Light Mode (Default)
+   Cucumber-branded shadcn/ui base theme
+   ============================================================================ */
+:root {
+  /* Typography */
+  --font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+
+  /* Base colors (shadcn base with cucumber accent) */
+  --background: hsl(0 0% 100%);
+  --foreground: hsl(0 0% 9%);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(0 0% 9%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(0 0% 9%);
+
+  /* Cucumber green as primary */
+  --primary: hsl(145 63% 42%);
+  --primary-foreground: hsl(0 0% 100%);
+
+  --secondary: hsl(0 0% 96.5%);
+  --secondary-foreground: hsl(0 0% 9%);
+  --muted: hsl(0 0% 96.5%);
+  --muted-foreground: hsl(0 0% 45%);
+  --accent: hsl(0 0% 96.5%);
+  --accent-foreground: hsl(0 0% 9%);
+  --destructive: hsl(0 84% 60%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --border: hsl(0 0% 90%);
+  --input: hsl(0 0% 90%);
+  --ring: hsl(145 63% 42%);
+  --radius: 0.5rem;
+
+  /* Shadows - refined for depth */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.03);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+
+  /* Status colors - cucumber-harmonized */
+  --success: hsl(145 63% 42%);
+  --success-light: hsl(145 55% 96%);
+  --success-border: hsl(145 55% 88%);
+  --error: hsl(0 72% 51%);
+  --error-light: hsl(0 86% 97%);
+  --error-border: hsl(0 72% 92%);
+  --warning: hsl(38 92% 50%);
+  --warning-light: hsl(48 100% 96%);
+  --warning-border: hsl(48 96% 88%);
+  --pending: hsl(262 60% 55%);
+  --pending-light: hsl(262 55% 97%);
+  --pending-border: hsl(262 55% 90%);
+
+  /* Cucumber-specific */
+  --keyword-color: hsl(145 63% 32%);
+  --tag-bg: hsl(145 55% 95%);
+  --tag-color: hsl(145 63% 30%);
+  --tag-border: hsl(145 55% 85%);
+  --step-param-color: hsl(220 70% 50%);
+
+  /* Accordion/Collapsible styling */
+  --accordion-header-hover: hsl(0 0% 98%);
+  --accordion-content-bg: hsl(0 0% 98.5%);
+}
+
+/* ============================================================================
+   Dark Mode - Cucumber branded
+   ============================================================================ */
+[data-theme="dark"] {
+  --background: hsl(0 0% 6%);
+  --foreground: hsl(0 0% 95%);
+  --card: hsl(0 0% 9%);
+  --card-foreground: hsl(0 0% 95%);
+  --popover: hsl(0 0% 9%);
+  --popover-foreground: hsl(0 0% 95%);
+
+  /* Cucumber green stays vibrant in dark mode */
+  --primary: hsl(145 63% 50%);
+  --primary-foreground: hsl(0 0% 6%);
+
+  --secondary: hsl(0 0% 13%);
+  --secondary-foreground: hsl(0 0% 95%);
+  --muted: hsl(0 0% 13%);
+  --muted-foreground: hsl(0 0% 55%);
+  --accent: hsl(0 0% 13%);
+  --accent-foreground: hsl(0 0% 95%);
+  --destructive: hsl(0 72% 55%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --border: hsl(0 0% 16%);
+  --input: hsl(0 0% 16%);
+  --ring: hsl(145 63% 50%);
+
+  /* Shadows (subtle for dark mode) */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.35);
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.35);
+  --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.45), 0 4px 6px -4px rgb(0 0 0 / 0.35);
+
+  /* Status colors (dark mode) */
+  --success: hsl(145 63% 55%);
+  --success-light: hsl(145 35% 14%);
+  --success-border: hsl(145 35% 22%);
+  --error: hsl(0 72% 60%);
+  --error-light: hsl(0 35% 14%);
+  --error-border: hsl(0 35% 22%);
+  --warning: hsl(38 92% 55%);
+  --warning-light: hsl(38 35% 14%);
+  --warning-border: hsl(38 35% 22%);
+  --pending: hsl(262 60% 65%);
+  --pending-light: hsl(262 25% 14%);
+  --pending-border: hsl(262 25% 22%);
+
+  /* Cucumber-specific (dark) */
+  --keyword-color: hsl(145 63% 60%);
+  --tag-bg: hsl(145 35% 14%);
+  --tag-color: hsl(145 63% 60%);
+  --tag-border: hsl(145 35% 22%);
+  --step-param-color: hsl(220 70% 70%);
+
+  /* Accordion/Collapsible styling */
+  --accordion-header-hover: hsl(0 0% 11%);
+  --accordion-content-bg: hsl(0 0% 7%);
+}
+
+/* Auto dark mode based on system preference */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --background: hsl(0 0% 6%);
+    --foreground: hsl(0 0% 95%);
+    --card: hsl(0 0% 9%);
+    --card-foreground: hsl(0 0% 95%);
+    --popover: hsl(0 0% 9%);
+    --popover-foreground: hsl(0 0% 95%);
+    --primary: hsl(145 63% 50%);
+    --primary-foreground: hsl(0 0% 6%);
+    --secondary: hsl(0 0% 13%);
+    --secondary-foreground: hsl(0 0% 95%);
+    --muted: hsl(0 0% 13%);
+    --muted-foreground: hsl(0 0% 55%);
+    --accent: hsl(0 0% 13%);
+    --accent-foreground: hsl(0 0% 95%);
+    --destructive: hsl(0 72% 55%);
+    --destructive-foreground: hsl(0 0% 100%);
+    --border: hsl(0 0% 16%);
+    --input: hsl(0 0% 16%);
+    --ring: hsl(145 63% 50%);
+    --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.35);
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.35);
+    --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.45), 0 4px 6px -4px rgb(0 0 0 / 0.35);
+    --success: hsl(145 63% 55%);
+    --success-light: hsl(145 35% 14%);
+    --success-border: hsl(145 35% 22%);
+    --error: hsl(0 72% 60%);
+    --error-light: hsl(0 35% 14%);
+    --error-border: hsl(0 35% 22%);
+    --warning: hsl(38 92% 55%);
+    --warning-light: hsl(38 35% 14%);
+    --warning-border: hsl(38 35% 22%);
+    --pending: hsl(262 60% 65%);
+    --pending-light: hsl(262 25% 14%);
+    --pending-border: hsl(262 25% 22%);
+    --keyword-color: hsl(145 63% 60%);
+    --tag-bg: hsl(145 35% 14%);
+    --tag-color: hsl(145 63% 60%);
+    --tag-border: hsl(145 35% 22%);
+    --step-param-color: hsl(220 70% 70%);
+    --accordion-header-hover: hsl(0 0% 11%);
+    --accordion-content-bg: hsl(0 0% 7%);
+  }
+}
+
+/* ============================================================================
+   Base Styles
+   ============================================================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--foreground);
+  background-color: var(--background);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================================
+   Layout
+   ============================================================================ */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 2rem 2.5rem;
+  }
+}
+
+/* ============================================================================
+   Header - shadcn style
+   ============================================================================ */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.header h1 {
+  font-size: 1.375rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.625rem;
+  align-items: center;
+}
+
+/* ============================================================================
+   Theme Toggle - shadcn button style
+   ============================================================================ */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--background);
+  cursor: pointer;
+  color: var(--foreground);
+  font-size: 1rem;
+  transition: all 0.15s ease;
+}
+
+.theme-toggle:hover {
+  background: var(--accent);
+  border-color: var(--border);
+}
+
+.theme-toggle:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);
+}
+
+/* ============================================================================
+   Search Input - shadcn input style
+   ============================================================================ */
+.search-input {
+  height: 2.25rem;
+  padding: 0 0.875rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  width: 220px;
+  transition: all 0.15s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--ring);
+  box-shadow: 0 0 0 3px hsl(145 63% 42% / 0.1);
+}
+
+.search-input::placeholder {
+  color: var(--muted-foreground);
+}
+
+@media (min-width: 640px) {
+  .search-input {
+    width: 260px;
+  }
+}
+
+/* ============================================================================
+   Meta Info - clean card style
+   ============================================================================ */
+.meta-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.75rem;
+  margin-bottom: 1.25rem;
+  padding: 0.75rem 1rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.8125rem;
+  color: var(--muted-foreground);
+}
+
+.meta-info dt {
+  font-weight: 500;
+  color: var(--foreground);
+  display: inline;
+}
+
+.meta-info dd {
+  display: inline;
+  margin: 0 0 0 0.375rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+/* ============================================================================
+   Summary Cards - tinted card style
+   ============================================================================ */
+.summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.summary-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  transition: all 0.15s ease;
+}
+
+.summary-card:hover {
+  box-shadow: var(--shadow-sm);
+}
+
+.summary-card .label {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted-foreground);
+  font-weight: 500;
+  margin-bottom: 0.375rem;
+}
+
+.summary-card .value {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  font-family: var(--font-sans);
+}
+
+/* Passed - green tint */
+.summary-card.passed {
+  background: var(--success-light);
+  border-color: var(--success-border);
+}
+.summary-card.passed .value { color: var(--success); }
+
+/* Failed - red tint */
+.summary-card.failed {
+  background: var(--error-light);
+  border-color: var(--error-border);
+}
+.summary-card.failed .value { color: var(--error); }
+
+/* Skipped - amber tint */
+.summary-card.skipped {
+  background: var(--warning-light);
+  border-color: var(--warning-border);
+}
+.summary-card.skipped .value { color: var(--warning); }
+
+/* Pending - purple tint */
+.summary-card.pending {
+  background: var(--pending-light);
+  border-color: var(--pending-border);
+}
+.summary-card.pending .value { color: var(--pending); }
+
+/* ============================================================================
+   Tag Filter Bar
+   ============================================================================ */
+.tag-bar {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.tag-bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tag-bar-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+}
+
+.tag-bar-toggle:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: var(--radius);
+}
+
+.tag-bar-label {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted-foreground);
+  font-weight: 500;
+}
+
+.tag-bar-count {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.tag-bar-chevron {
+  color: var(--muted-foreground);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.tag-bar-collapsed .tag-bar-chevron {
+  transform: rotate(0deg);
+}
+
+.tag-bar:not(.tag-bar-collapsed) .tag-bar-chevron {
+  transform: rotate(180deg);
+}
+
+.tag-bar-clear {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--destructive, #dc2626);
+  background: var(--destructive-light, #fef2f2);
+  border: 1px solid var(--destructive-border, #fecaca);
+  cursor: pointer;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius);
+  transition: all 0.15s ease;
+}
+
+.tag-bar-clear:hover {
+  background: var(--destructive-border, #fecaca);
+}
+
+.tag-bar-clear:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.tag-bar-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 0.5rem;
+}
+
+.tag-bar-collapsed .tag-bar-pills {
+  display: none;
+}
+
+.tag-pill {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.625rem;
+  background: var(--tag-bg);
+  color: var(--tag-color);
+  border: 1px solid var(--tag-border);
+  border-radius: 9999px;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tag-pill:hover {
+  background: var(--success-border);
+}
+
+.tag-pill:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.tag-pill.active {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border-color: var(--primary);
+}
+
+/* ============================================================================
+   Summary Card Status Filter
+   ============================================================================ */
+.summary-card.status-active {
+  box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);
+}
+
+/* ============================================================================
+   Filter Results Counter
+   ============================================================================ */
+.filter-results {
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--muted-foreground);
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+/* ============================================================================
+   Feature Sections - shadcn accordion style
+   ============================================================================ */
+.feature {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 0.625rem;
+  overflow: hidden;
+}
+
+.feature-header {
+  padding: 0.875rem 1rem;
+  background: var(--card);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.15s ease;
+  gap: 1rem;
+}
+
+.feature-header:hover {
+  background: var(--accordion-header-hover);
+}
+
+.feature-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.feature-title {
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: var(--foreground);
+  letter-spacing: -0.01em;
+}
+
+.feature-path {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  font-family: var(--font-mono);
+  margin-top: 0.125rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.feature-stats {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.feature-stats .stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.feature-stats .stat.passed { color: var(--success); }
+.feature-stats .stat.failed { color: var(--error); }
+.feature-stats .stat.skipped { color: var(--warning); }
+
+.feature-content {
+  padding: 0.625rem;
+  border-top: 1px solid var(--border);
+  background: var(--accordion-content-bg);
+}
+
+.feature.collapsed .feature-content {
+  display: none;
+}
+
+/* ============================================================================
+   Scenarios - nested accordion style
+   ============================================================================ */
+.scenario {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 2px);
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+}
+
+.scenario:last-child {
+  margin-bottom: 0;
+}
+
+.scenario-header {
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  gap: 1rem;
+}
+
+.scenario-header:hover {
+  background: var(--accordion-header-hover);
+}
+
+.scenario-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.scenario-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--foreground);
+}
+
+.scenario-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.scenario-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-top: 0.375rem;
+}
+
+.tag {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  padding: 0.125rem 0.5rem;
+  background: var(--tag-bg);
+  color: var(--tag-color);
+  border: 1px solid var(--tag-border);
+  border-radius: 9999px;
+  font-family: var(--font-mono);
+}
+
+.scenario-duration {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.scenario-content {
+  padding: 0.75rem 1rem 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.scenario.collapsed .scenario-content {
+  display: none;
+}
+
+/* ============================================================================
+   Status Icons - refined
+   ============================================================================ */
+.status-icon {
+  font-size: 0.875rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.status-passed { color: var(--success); }
+.status-failed { color: var(--error); }
+.status-skipped { color: var(--warning); }
+.status-pending { color: var(--pending); }
+
+/* ============================================================================
+   Steps - story-like flow
+   ============================================================================ */
+.steps {
+  margin-top: 0.25rem;
+  padding: 0.25rem 0;
+}
+
+.step {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.375rem 0;
+  font-size: 0.8125rem;
+  align-items: baseline;
+  line-height: 1.5;
+}
+
+.step-status {
+  flex-shrink: 0;
+  width: 1rem;
+  text-align: center;
+  font-size: 0.75rem;
+}
+
+.step-keyword {
+  font-weight: 600;
+  color: var(--keyword-color);
+  flex-shrink: 0;
+  min-width: 52px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+/* Indent continuation keywords (And, But, *) to show they belong to previous step */
+.step.continuation {
+  padding-left: 1.25rem;
+}
+
+.step.continuation .step-keyword {
+  color: var(--muted-foreground);
+  font-weight: 500;
+}
+
+.step-text {
+  flex: 1;
+  color: var(--foreground);
+}
+
+.step-param {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--step-param-color);
+}
+
+.step-duration {
+  color: var(--muted-foreground);
+  font-size: 0.6875rem;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  opacity: 0.7;
+}
+
+/* ============================================================================
+   Error Display - alert style
+   ============================================================================ */
+.error-box {
+  margin-top: 0.75rem;
+  padding: 0.875rem 1rem;
+  background: var(--error-light);
+  border-radius: calc(var(--radius) - 2px);
+  border: 1px solid var(--error-border);
+  border-left: 3px solid var(--error);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-x: auto;
+  color: var(--error);
+}
+
+/* ============================================================================
+   Attachments - badge style
+   ============================================================================ */
+.attachments {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.attachment {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  background: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 2px);
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  text-decoration: none;
+  color: var(--muted-foreground);
+  transition: all 0.15s ease;
+}
+
+.attachment:hover {
+  background: var(--accent);
+  color: var(--foreground);
+  border-color: var(--ring);
+}
+
+.attachment-image {
+  max-width: 100%;
+  margin-top: 0.5rem;
+  border-radius: calc(var(--radius) - 2px);
+  border: 1px solid var(--border);
+}
+
+.attachment-video {
+  max-width: 100%;
+  margin-top: 0.5rem;
+  border-radius: calc(var(--radius) - 2px);
+  border: 1px solid var(--border);
+}
+
+/* ============================================================================
+   Chevron Icon - smooth rotation
+   ============================================================================ */
+.chevron {
+  color: var(--muted-foreground);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.collapsed .chevron {
+  transform: rotate(-90deg);
+}
+
+/* ============================================================================
+   Scrollbars - subtle styling
+   ============================================================================ */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
+
+/* ============================================================================
+   Focus States - cucumber ring color
+   ============================================================================ */
+*:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);
+}
+
+/* ============================================================================
+   Selection - cucumber tinted
+   ============================================================================ */
+::selection {
+  background: hsl(145 63% 42% / 0.15);
+  color: inherit;
+}
+
+/* ============================================================================
+   Animations - smooth reveals
+   ============================================================================ */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.feature {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.feature:nth-child(2) { animation-delay: 0.02s; }
+.feature:nth-child(3) { animation-delay: 0.04s; }
+.feature:nth-child(4) { animation-delay: 0.06s; }
+.feature:nth-child(5) { animation-delay: 0.08s; }
+
+/* ============================================================================
+   Print Styles
+   ============================================================================ */
+@media print {
+  :root {
+    --background: white;
+    --foreground: black;
+    --card: white;
+    --border: #e5e5e5;
+    --muted: #f5f5f5;
+    --muted-foreground: #666;
+  }
+
+  body {
+    font-size: 12px;
+  }
+
+  .container {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .header-actions,
+  .tag-bar,
+  .filter-results {
+    display: none !important;
+  }
+
+  .feature,
+  .scenario {
+    page-break-inside: avoid;
+    box-shadow: none;
+    animation: none;
+  }
+
+  .collapsed .feature-content,
+  .collapsed .scenario-content {
+    display: block;
+  }
+}
+
+/* ============================================================================
+   Documentation Entries - Containers
+   ============================================================================ */
+.story-docs {
+  margin-bottom: 0.75rem;
+  padding: 0.75rem;
+  background: var(--accordion-content-bg);
+  border-radius: calc(var(--radius) - 2px);
+  border: 1px solid var(--border);
+}
+
+.step-docs {
+  margin-left: 1.5rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--accordion-content-bg);
+  border-left: 2px solid var(--primary);
+  border-radius: 0 calc(var(--radius) - 2px) calc(var(--radius) - 2px) 0;
+}
+
+/* ============================================================================
+   Documentation Entries - Note
+   ============================================================================ */
+.doc-note {
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.5rem;
+  background: var(--muted);
+  border-left: 3px solid var(--primary);
+  border-radius: 0 calc(var(--radius) - 2px) calc(var(--radius) - 2px) 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--foreground);
+}
+
+.doc-note:last-child {
+  margin-bottom: 0;
+}
+
+/* ============================================================================
+   Documentation Entries - Tags
+   ============================================================================ */
+.doc-tag {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-bottom: 0.5rem;
+}
+
+.doc-tag:last-child {
+  margin-bottom: 0;
+}
+
+.doc-tag-item {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  padding: 0.125rem 0.5rem;
+  background: var(--tag-bg);
+  color: var(--tag-color);
+  border: 1px solid var(--tag-border);
+  border-radius: 9999px;
+  font-family: var(--font-mono);
+}
+
+/* ============================================================================
+   Documentation Entries - Key-Value
+   ============================================================================ */
+.doc-kv {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.375rem;
+  font-size: 0.8125rem;
+  align-items: baseline;
+}
+
+.doc-kv:last-child {
+  margin-bottom: 0;
+}
+
+.doc-kv-label {
+  font-weight: 600;
+  color: var(--muted-foreground);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.doc-kv-value {
+  color: var(--foreground);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ============================================================================
+   Documentation Entries - Code
+   ============================================================================ */
+.doc-code {
+  margin-bottom: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 2px);
+  overflow: hidden;
+}
+
+.doc-code:last-child {
+  margin-bottom: 0;
+}
+
+.doc-code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  background: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+
+.doc-code-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+}
+
+.doc-code-lang {
+  font-size: 0.625rem;
+  font-weight: 500;
+  padding: 0.125rem 0.375rem;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.doc-code-content {
+  margin: 0;
+  padding: 0.75rem;
+  background: var(--card);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.6;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.doc-code-content code {
+  font-family: inherit;
+  background: none;
+}
+
+/* ============================================================================
+   Documentation Entries - Table
+   ============================================================================ */
+.doc-table {
+  margin-bottom: 0.5rem;
+}
+
+.doc-table:last-child {
+  margin-bottom: 0;
+}
+
+.doc-table-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  margin-bottom: 0.375rem;
+}
+
+.doc-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+}
+
+.doc-table th,
+.doc-table td {
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  border: 1px solid var(--border);
+}
+
+.doc-table th {
+  background: var(--muted);
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.doc-table td {
+  background: var(--card);
+  color: var(--foreground);
+}
+
+.doc-table tr:hover td {
+  background: var(--accordion-header-hover);
+}
+
+/* ============================================================================
+   Documentation Entries - Link
+   ============================================================================ */
+.doc-link {
+  margin-bottom: 0.375rem;
+}
+
+.doc-link:last-child {
+  margin-bottom: 0;
+}
+
+.doc-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.doc-link a:hover {
+  color: var(--keyword-color);
+  text-decoration: underline;
+}
+
+.doc-link a::before {
+  content: "→";
+  font-size: 0.75rem;
+}
+
+/* ============================================================================
+   Documentation Entries - Section
+   ============================================================================ */
+.doc-section {
+  margin-bottom: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 2px);
+  overflow: hidden;
+}
+
+.doc-section:last-child {
+  margin-bottom: 0;
+}
+
+.doc-section-title {
+  padding: 0.5rem 0.75rem;
+  background: var(--muted);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.doc-section-content {
+  margin: 0;
+  padding: 0.75rem;
+  background: var(--card);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  color: var(--foreground);
+}
+
+/* Parsed markdown content in sections */
+.doc-section-parsed .doc-section-content {
+  white-space: normal;
+}
+
+.doc-section-parsed .doc-section-content h1,
+.doc-section-parsed .doc-section-content h2,
+.doc-section-parsed .doc-section-content h3,
+.doc-section-parsed .doc-section-content h4,
+.doc-section-parsed .doc-section-content h5,
+.doc-section-parsed .doc-section-content h6 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--foreground);
+}
+
+.doc-section-parsed .doc-section-content h1:first-child,
+.doc-section-parsed .doc-section-content h2:first-child,
+.doc-section-parsed .doc-section-content h3:first-child {
+  margin-top: 0;
+}
+
+.doc-section-parsed .doc-section-content h1 { font-size: 1.25rem; }
+.doc-section-parsed .doc-section-content h2 { font-size: 1.125rem; }
+.doc-section-parsed .doc-section-content h3 { font-size: 1rem; }
+.doc-section-parsed .doc-section-content h4 { font-size: 0.9375rem; }
+.doc-section-parsed .doc-section-content h5 { font-size: 0.875rem; }
+.doc-section-parsed .doc-section-content h6 { font-size: 0.8125rem; color: var(--muted-foreground); }
+
+.doc-section-parsed .doc-section-content p {
+  margin: 0.5em 0;
+}
+
+.doc-section-parsed .doc-section-content p:first-child {
+  margin-top: 0;
+}
+
+.doc-section-parsed .doc-section-content p:last-child {
+  margin-bottom: 0;
+}
+
+.doc-section-parsed .doc-section-content ul,
+.doc-section-parsed .doc-section-content ol {
+  margin: 0.5em 0;
+  padding-left: 1.5em;
+}
+
+.doc-section-parsed .doc-section-content li {
+  margin: 0.25em 0;
+}
+
+.doc-section-parsed .doc-section-content a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.doc-section-parsed .doc-section-content a:hover {
+  text-decoration: underline;
+}
+
+.doc-section-parsed .doc-section-content code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  padding: 0.125em 0.375em;
+  background: var(--muted);
+  border-radius: 3px;
+}
+
+.doc-section-parsed .doc-section-content pre {
+  margin: 0.75em 0;
+  padding: 0.75em;
+  background: var(--muted);
+  border-radius: calc(var(--radius) - 2px);
+  overflow-x: auto;
+}
+
+.doc-section-parsed .doc-section-content pre code {
+  padding: 0;
+  background: none;
+}
+
+.doc-section-parsed .doc-section-content blockquote {
+  margin: 0.75em 0;
+  padding: 0.5em 1em;
+  border-left: 3px solid var(--primary);
+  background: var(--muted);
+  color: var(--muted-foreground);
+}
+
+.doc-section-parsed .doc-section-content blockquote p {
+  margin: 0;
+}
+
+.doc-section-parsed .doc-section-content hr {
+  margin: 1em 0;
+  border: none;
+  border-top: 1px solid var(--border);
+}
+
+.doc-section-parsed .doc-section-content table {
+  width: 100%;
+  margin: 0.75em 0;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.doc-section-parsed .doc-section-content th,
+.doc-section-parsed .doc-section-content td {
+  padding: 0.5em 0.75em;
+  border: 1px solid var(--border);
+  text-align: left;
+}
+
+.doc-section-parsed .doc-section-content th {
+  background: var(--muted);
+  font-weight: 600;
+}
+
+.doc-section-parsed .doc-section-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: calc(var(--radius) - 2px);
+}
+
+/* ============================================================================
+   Documentation Entries - Mermaid (displayed as code)
+   ============================================================================ */
+.doc-mermaid {
+  margin-bottom: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 2px);
+  overflow: hidden;
+}
+
+.doc-mermaid:last-child {
+  margin-bottom: 0;
+}
+
+.doc-mermaid-title {
+  padding: 0.375rem 0.75rem;
+  background: var(--muted);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+}
+
+.doc-mermaid-title::before {
+  content: "◇ ";
+  color: var(--primary);
+}
+
+.doc-mermaid-code {
+  margin: 0;
+  padding: 0.75rem;
+  background: var(--card);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.6;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.doc-mermaid-code code {
+  font-family: inherit;
+  background: none;
+}
+
+/* ============================================================================
+   Documentation Entries - Screenshot
+   ============================================================================ */
+.doc-screenshot {
+  margin-bottom: 0.5rem;
+}
+
+.doc-screenshot:last-child {
+  margin-bottom: 0;
+}
+
+.doc-screenshot-img {
+  max-width: 100%;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 2px);
+  display: block;
+}
+
+.doc-screenshot-caption {
+  margin-top: 0.375rem;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  font-style: italic;
+}
+
+/* ============================================================================
+   Documentation Entries - Custom
+   ============================================================================ */
+.doc-custom {
+  margin-bottom: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 2px);
+  overflow: hidden;
+}
+
+.doc-custom:last-child {
+  margin-bottom: 0;
+}
+
+.doc-custom-type {
+  padding: 0.375rem 0.75rem;
+  background: var(--warning-light);
+  border-bottom: 1px solid var(--warning-border);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--warning);
+}
+
+.doc-custom-data {
+  margin: 0;
+  padding: 0.75rem;
+  background: var(--card);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.6;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.doc-custom-data code {
+  font-family: inherit;
+  background: none;
+}
+
+/* ============================================================================
+   Documentation Entries - Children
+   ============================================================================ */
+.doc-children {
+  margin-left: 1rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--border);
+  margin-top: 0.25rem;
+}
+
+/* ============================================================================
+   Trace View - OTel span waterfall
+   ============================================================================ */
+.trace-view {
+  margin-top: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 2px);
+  overflow: hidden;
+}
+
+.trace-view-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--card);
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--foreground);
+  transition: background-color 0.15s ease;
+}
+
+.trace-view-header:hover {
+  background: var(--accordion-header-hover);
+}
+
+.trace-view-count {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  padding: 0.125rem 0.5rem;
+  background: var(--success-light);
+  color: var(--success);
+  border: 1px solid var(--success-border);
+  border-radius: 9999px;
+  font-family: var(--font-mono);
+}
+
+.trace-view-content {
+  border-top: 1px solid var(--border);
+  padding: 0.5rem 0.75rem;
+  background: var(--accordion-content-bg);
+}
+
+.trace-view.collapsed .trace-view-content {
+  display: none;
+}
+
+.trace-view-axis {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.625rem;
+  font-family: var(--font-mono);
+  color: var(--muted-foreground);
+  padding-bottom: 0.375rem;
+  margin-bottom: 0.375rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.trace-view-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.1875rem 0;
+  font-size: 0.75rem;
+}
+
+.trace-view-name {
+  width: 35%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--foreground);
+}
+
+.trace-view-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.trace-view-status-ok { background: var(--success); }
+.trace-view-status-error { background: var(--error); }
+.trace-view-status-unset { background: var(--muted-foreground); }
+
+.trace-view-bar-container {
+  flex: 1;
+  position: relative;
+  height: 1.25rem;
+  background: var(--muted);
+  border-radius: 2px;
+}
+
+.trace-view-bar {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: 2px;
+  min-width: 2px;
+  display: flex;
+  align-items: center;
+  padding: 0 0.375rem;
+  font-size: 0.625rem;
+  font-family: var(--font-mono);
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.trace-view-bar-ok { background: var(--success); }
+.trace-view-bar-error { background: var(--error); }
+.trace-view-bar-unset { background: var(--muted-foreground); }
+
+@media print {
+  .trace-view.collapsed .trace-view-content {
+    display: block;
+  }
+}
+
+/* ============================================================================
+   History metric badges
+   ============================================================================ */
+.badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.75em; font-weight: 600; margin-left: 4px; vertical-align: middle; }
+.badge-grade { color: #fff; }
+.badge-grade-A { background: var(--success); }
+.badge-grade-B { background: #2196F3; }
+.badge-grade-C { background: #FF9800; }
+.badge-grade-D { background: #f44336; }
+.badge-grade-F { background: #9E0000; }
+.badge-flaky { background: #FF9800; color: #fff; }
+.badge-perf { font-size: 0.7em; }
+.badge-perf-improving { color: var(--success); }
+.badge-perf-regressing { color: var(--error); }
+
+/* Failure summary */
+.failure-summary {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--error);
+  border-radius: 0.5rem;
+  background: color-mix(in srgb, var(--error) 8%, transparent);
+}
+.failure-summary-header {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--error);
+  margin-bottom: 0.5rem;
+}
+.failure-summary-note {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  margin-bottom: 0.5rem;
+}
+.failure-summary-note code {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+.failure-summary ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.failure-summary li a {
+  font-size: 0.8125rem;
+  color: var(--foreground);
+  text-decoration: none;
+}
+.failure-summary li a:hover {
+  text-decoration: underline;
+  color: var(--error);
+}
+
+/* Source permalink */
+.source-link {
+  font-size: 0.6875rem;
+  color: var(--muted-foreground);
+  text-decoration: none;
+  font-family: var(--font-mono);
+}
+.source-link:hover {
+  text-decoration: underline;
+  color: var(--foreground);
+}
+
+/* ============================================================================
+   Detail Level Toggle
+   ============================================================================ */
+.detail-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--background);
+  cursor: pointer;
+  color: var(--foreground);
+  font-size: 1rem;
+  transition: all 0.15s ease;
+}
+
+.detail-toggle:hover {
+  background: var(--accent);
+  border-color: var(--border);
+}
+
+.detail-toggle:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);
+}
+
+[data-detail-level="minimal"] .story-docs,
+[data-detail-level="minimal"] .step-docs {
+  display: none;
+}
+
+/* ============================================================================
+   Permalink Anchors
+   ============================================================================ */
+.permalink-anchor {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: none;
+  background: none;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.feature-header:hover .permalink-anchor,
+.scenario-header:hover .permalink-anchor,
+.permalink-anchor:focus-visible {
+  opacity: 1;
+}
+
+.permalink-anchor:hover {
+  color: var(--primary);
+}
+
+.copy-toast {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--foreground);
+  color: var(--background);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius);
+  font-size: 0.75rem;
+  font-weight: 500;
+  pointer-events: none;
+  animation: fadeOut 1.5s ease forwards;
+  z-index: 10;
+}
+
+@keyframes fadeOut {
+  0%, 70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.hash-highlight {
+  animation: hashPulse 2s ease;
+}
+
+@keyframes hashPulse {
+  0%, 100% { background: transparent; }
+  20% { background: color-mix(in srgb, var(--primary) 12%, transparent); }
+}
+
+.scenario-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+.copy-scenario-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: none;
+  background: none;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  font-size: 0.875rem;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.scenario-header:hover .copy-scenario-btn,
+.copy-scenario-btn:focus-visible {
+  opacity: 1;
+}
+
+.copy-scenario-btn:hover {
+  color: var(--primary);
+}
+
+/* ============================================================================
+   Keyboard Navigation
+   ============================================================================ */
+.scenario-focused {
+  border-left: 2px solid var(--primary);
+}
+
+.shortcuts-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgb(0 0 0 / 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.shortcuts-modal {
+  background: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 2);
+  padding: 1.5rem 2rem;
+  max-width: 400px;
+  width: 90vw;
+  box-shadow: var(--shadow-md, 0 4px 12px rgb(0 0 0 / 0.15));
+}
+
+.shortcuts-title {
+  font-weight: 600;
+  font-size: 1.125rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.shortcuts-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem 1rem;
+  align-items: center;
+}
+
+.shortcuts-grid kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.75rem;
+  padding: 0.125rem 0.375rem;
+  background: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 0.5);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+}
+
+.shortcuts-grid span {
+  font-size: 0.875rem;
+  color: var(--foreground);
+}
+
+/* ============================================================================
+   Table of Contents Sidebar
+   ============================================================================ */
+.report-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.report-layout.toc-hidden .toc-sidebar {
+  display: none;
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.toc-sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  border-right: 1px solid var(--border);
+  background: var(--card);
+  padding: 1rem 0;
+  font-size: 0.8125rem;
+}
+
+.toc-header {
+  padding: 0 1rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.5rem;
+}
+
+.toc-title {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--foreground);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a.toc-title:hover {
+  color: var(--primary);
+}
+
+.toc-feature {
+  margin-bottom: 0.25rem;
+}
+
+.toc-feature-toggle {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.375rem 1rem;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+.toc-feature-toggle:hover {
+  background: var(--accent);
+}
+
+.toc-feature-toggle[aria-expanded="false"] + .toc-scenarios {
+  display: none;
+}
+
+.toc-scenarios {
+  display: flex;
+  flex-direction: column;
+}
+
+.toc-scenario {
+  display: flex;
+  align-items: baseline;
+  gap: 0.375rem;
+  padding: 0.25rem 1rem 0.25rem 1.5rem;
+  color: var(--muted-foreground);
+  text-decoration: none;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  border-left: 2px solid transparent;
+  transition: all 0.1s ease;
+}
+
+.toc-scenario:hover {
+  color: var(--foreground);
+  background: var(--accent);
+}
+
+.toc-scenario.toc-active {
+  color: var(--foreground);
+  border-left-color: var(--primary);
+  font-weight: 500;
+}
+
+.toc-scenario.toc-failed {
+  border-left-color: var(--error, var(--destructive));
+}
+
+.toc-status {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+}
+
+.toc-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--background);
+  cursor: pointer;
+  color: var(--foreground);
+  font-size: 1rem;
+  transition: all 0.15s ease;
+}
+
+.toc-toggle:hover {
+  background: var(--accent);
+}
+
+/* Mobile: overlay sidebar */
+@media (max-width: 767px) {
+  .toc-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 50;
+    box-shadow: var(--shadow-sm, 0 1px 3px rgb(0 0 0 / 0.1));
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+  }
+
+  .toc-sidebar.toc-mobile-open {
+    transform: translateX(0);
+  }
+}
+
+/* ============================================================================
+   Theme Picker
+   ============================================================================ */
+.theme-picker {
+  height: 2.25rem;
+  padding: 0 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--background);
+  color: var(--foreground);
+  font-size: 0.8125rem;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.theme-picker:hover {
+  background: var(--accent);
+}
+
+.theme-picker:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+</style>
+  
+</head>
+<body>
+  <div class="report-layout">
+    <nav class="toc-sidebar" aria-label="Table of contents">
+  <div class="toc-header">
+    <a href="#" class="toc-title" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Contents</a>
+  </div>
+  <div class="toc-body">
+    <div class="toc-feature">
+      <button class="toc-feature-toggle" aria-expanded="true" onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'); this.nextElementSibling.style.display = this.getAttribute('aria-expanded') === 'true' ? '' : 'none'" data-feature="#feature-tests-integration-send-moneymswstorytestts">
+        Send Money Workflow (MSW)
+      </button>
+      <div class="toc-scenarios">
+        <a class="toc-scenario" href="#scenario-2541c86480aa">
+          <span class="toc-status status-passed">✓</span>
+          sendMoney uses rates from mocked api-rates
+        </a>
+      </div>
+    </div>
+<div class="toc-feature">
+      <button class="toc-feature-toggle" aria-expanded="true" onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'); this.nextElementSibling.style.display = this.getAttribute('aria-expanded') === 'true' ? '' : 'none'" data-feature="#feature-tests-integration-send-moneyspansstorytestts">
+        Send Money Workflow (autotel spans)
+      </button>
+      <div class="toc-scenarios">
+        <a class="toc-scenario" href="#scenario-5e720377ec2f">
+          <span class="toc-status status-passed">✓</span>
+          produces the full span tree for a successful transfer
+        </a>
+<a class="toc-scenario" href="#scenario-68e3219a03b3">
+          <span class="toc-status status-passed">✓</span>
+          records validation attributes on the validate span
+        </a>
+      </div>
+    </div>
+<div class="toc-feature">
+      <button class="toc-feature-toggle" aria-expanded="true" onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'); this.nextElementSibling.style.display = this.getAttribute('aria-expanded') === 'true' ? '' : 'none'" data-feature="#feature-tests-unit-convert-currencystorytestts">
+        Convert Currency
+      </button>
+      <div class="toc-scenarios">
+        <a class="toc-scenario" href="#scenario-3d76d5a9bb5c">
+          <span class="toc-status status-passed">✓</span>
+          converts 100 GBP to EUR at rate 1.17
+        </a>
+<a class="toc-scenario" href="#scenario-122d41c9cfa8">
+          <span class="toc-status status-passed">✓</span>
+          returns InsufficientFundsError when balance too low
+        </a>
+<a class="toc-scenario" href="#scenario-8b22659a86f6">
+          <span class="toc-status status-passed">✓</span>
+          rounds to 2 decimal places
+        </a>
+      </div>
+    </div>
+<div class="toc-feature">
+      <button class="toc-feature-toggle" aria-expanded="true" onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'); this.nextElementSibling.style.display = this.getAttribute('aria-expanded') === 'true' ? '' : 'none'" data-feature="#feature-tests-unit-fetch-ratestorytestts">
+        Fetch Rate
+      </button>
+      <div class="toc-scenarios">
+        <a class="toc-scenario" href="#scenario-e0fd65517b5c">
+          <span class="toc-status status-passed">✓</span>
+          returns exchange rate for a supported pair
+        </a>
+<a class="toc-scenario" href="#scenario-1c105685b5de">
+          <span class="toc-status status-passed">✓</span>
+          returns RateUnavailableError when rates API fails
+        </a>
+<a class="toc-scenario" href="#scenario-57f1fa924074">
+          <span class="toc-status status-passed">✓</span>
+          returns RateUnavailableError when pair is missing from the matrix
+        </a>
+      </div>
+    </div>
+<div class="toc-feature">
+      <button class="toc-feature-toggle" aria-expanded="true" onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'); this.nextElementSibling.style.display = this.getAttribute('aria-expanded') === 'true' ? '' : 'none'" data-feature="#feature-tests-unit-send-money-workflowstorytestts">
+        Send Money Workflow
+      </button>
+      <div class="toc-scenarios">
+        <a class="toc-scenario" href="#scenario-4bf9d81723c6">
+          <span class="toc-status status-passed">✓</span>
+          workflow overview
+        </a>
+<a class="toc-scenario" href="#scenario-3a518b98d4dd">
+          <span class="toc-status status-passed">✓</span>
+          happy path: send £100 GBP → EUR
+        </a>
+<a class="toc-scenario" href="#scenario-66d6854c32c9">
+          <span class="toc-status status-passed">✓</span>
+          exits early on validation error
+        </a>
+<a class="toc-scenario" href="#scenario-7c0a42f6a66b">
+          <span class="toc-status status-passed">✓</span>
+          exits early on rate unavailable
+        </a>
+<a class="toc-scenario" href="#scenario-268e03445e67">
+          <span class="toc-status status-passed">✓</span>
+          exits early on insufficient funds
+        </a>
+      </div>
+    </div>
+<div class="toc-feature">
+      <button class="toc-feature-toggle" aria-expanded="true" onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded') === 'true' ? 'false' : 'true'); this.nextElementSibling.style.display = this.getAttribute('aria-expanded') === 'true' ? '' : 'none'" data-feature="#feature-tests-unit-validate-transferstorytestts">
+        Validate Transfer
+      </button>
+      <div class="toc-scenarios">
+        <a class="toc-scenario" href="#scenario-c0d15e0439cd">
+          <span class="toc-status status-passed">✓</span>
+          accepts valid transfer input
+        </a>
+<a class="toc-scenario" href="#scenario-9dae3dcb8660">
+          <span class="toc-status status-passed">✓</span>
+          rejects invalid IBAN
+        </a>
+<a class="toc-scenario" href="#scenario-e608ca83ce85">
+          <span class="toc-status status-passed">✓</span>
+          rejects same source and target currency
+        </a>
+<a class="toc-scenario" href="#scenario-df1612a4dfc7">
+          <span class="toc-status status-passed">✓</span>
+          spec by example — validation rules
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+    <div class="main-content">
+      <div class="container">
+        <header class="header">
+          <h1>Money Transfer API Stories</h1>
+          <div class="header-actions">
+            <button type="button" class="toc-toggle" onclick="toggleToc()" aria-label="Toggle table of contents" title="Toggle contents">&#x2630;</button>
+            <input type="text" class="search-input" placeholder="Search scenarios..." aria-label="Search scenarios">
+            <button type="button" class="detail-toggle" onclick="toggleDetailLevel()" aria-label="Toggle detail level" title="Toggle documentation detail"></button>
+            
+            <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme"></button>
+          </div>
+        </header>
+        <dl class="meta-info"><dt>Started:</dt><dd>2026-04-20T12:44:12.069Z</dd><dt>Duration:</dt><dd>0.79s</dd></dl>
+
+<div class="summary">
+  <div class="summary-card">
+    <div class="label">Total</div>
+    <div class="value">18</div>
+  </div>
+  <div class="summary-card passed">
+    <div class="label">Passed</div>
+    <div class="value">18</div>
+  </div>
+  <div class="summary-card failed">
+    <div class="label">Failed</div>
+    <div class="value">0</div>
+  </div>
+  <div class="summary-card skipped">
+    <div class="label">Skipped</div>
+    <div class="value">0</div>
+  </div>
+</div>
+
+
+<div class="feature" id="feature-tests-integration-send-moneymswstorytestts">
+  <div class="feature-header" role="button" tabindex="0" aria-expanded="true">
+    <button class="permalink-anchor" onclick="copyPermalink('feature-tests-integration-send-moneymswstorytestts')" aria-label="Copy link to feature" title="Copy link">#</button>
+    <div class="feature-info">
+      <div class="feature-title">Send Money Workflow (MSW)</div>
+      <div class="feature-path">tests/integration/send-money.msw.story.test.ts</div>
+    </div>
+    <div class="feature-stats">
+      <span class="stat passed">✓ 1</span>
+      <span class="stat failed">✗ 0</span>
+      <span class="stat skipped">○ 0</span>
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="feature-content">
+    
+<div class="scenario" id="scenario-2541c86480aa">
+  <div class="scenario-header" role="button" tabindex="0" aria-expanded="true">
+    <div class="scenario-info">
+      <div class="scenario-title">
+        <span class="status-icon status-passed">✓</span>
+        <span class="scenario-name">sendMoney uses rates from mocked api-rates</span>
+      </div>
+      <div class="scenario-meta"></div>
+    </div>
+    <div class="scenario-actions">
+      <button class="copy-scenario-btn" onclick="copyScenarioAsMarkdown('scenario-2541c86480aa')" aria-label="Copy scenario as markdown" title="Copy as Markdown"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      <button class="permalink-anchor" onclick="copyPermalink('scenario-2541c86480aa')" aria-label="Copy link to scenario" title="Copy link">#</button>
+      <span class="scenario-duration"></span>
+    </div>
+  </div>
+  <div class="scenario-content">
+    
+    <div class="steps"><div class="step" data-keyword="Given" data-text="a valid transfer request for £100 GBP to EUR with MSW mocking the rates API">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Given</span>
+  <span class="step-text">a valid transfer request for £<span class="step-param">100</span> GBP to EUR with MSW mocking the rates API</span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="When" data-text="the workflow runs end-to-end">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">When</span>
+  <span class="step-text">the workflow runs end-to-end</span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="Then" data-text="the transfer completes with €117.00 using the mocked rate 1.17">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Then</span>
+  <span class="step-text">the transfer completes with €<span class="step-param">117.00</span> using the mocked rate <span class="step-param">1.17</span></span>
+  <span class="step-duration"></span>
+</div><div class="step-docs"><div class="doc-code">
+  <div class="doc-code-header">
+    <span class="doc-code-label">Transfer Result</span>
+    <span class="doc-code-lang">json</span>
+  </div>
+  <pre class="doc-code-content"><code class="language-json">{
+  &quot;transferId&quot;: &quot;TXN-000001&quot;,
+  &quot;convertedAmount&quot;: 117,
+  &quot;rate&quot;: 1.17
+}</code></pre>
+</div></div></div>
+    
+    
+    
+  </div>
+</div>
+  </div>
+</div>
+
+<div class="feature" id="feature-tests-integration-send-moneyspansstorytestts">
+  <div class="feature-header" role="button" tabindex="0" aria-expanded="true">
+    <button class="permalink-anchor" onclick="copyPermalink('feature-tests-integration-send-moneyspansstorytestts')" aria-label="Copy link to feature" title="Copy link">#</button>
+    <div class="feature-info">
+      <div class="feature-title">Send Money Workflow (autotel spans)</div>
+      <div class="feature-path">tests/integration/send-money.spans.story.test.ts</div>
+    </div>
+    <div class="feature-stats">
+      <span class="stat passed">✓ 2</span>
+      <span class="stat failed">✗ 0</span>
+      <span class="stat skipped">○ 0</span>
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="feature-content">
+    
+<div class="scenario" id="scenario-5e720377ec2f">
+  <div class="scenario-header" role="button" tabindex="0" aria-expanded="true">
+    <div class="scenario-info">
+      <div class="scenario-title">
+        <span class="status-icon status-passed">✓</span>
+        <span class="scenario-name">produces the full span tree for a successful transfer</span>
+      </div>
+      <div class="scenario-meta"></div>
+    </div>
+    <div class="scenario-actions">
+      <button class="copy-scenario-btn" onclick="copyScenarioAsMarkdown('scenario-5e720377ec2f')" aria-label="Copy scenario as markdown" title="Copy as Markdown"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      <button class="permalink-anchor" onclick="copyPermalink('scenario-5e720377ec2f')" aria-label="Copy link to scenario" title="Copy link">#</button>
+      <span class="scenario-duration"></span>
+    </div>
+  </div>
+  <div class="scenario-content">
+    
+    <div class="steps"><div class="step" data-keyword="Given" data-text="autotel uses TestSpanCollector for trace capture">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Given</span>
+  <span class="step-text">autotel uses TestSpanCollector for trace capture</span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="When" data-text="the sendMoney workflow runs for 100 GBP to EUR">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">When</span>
+  <span class="step-text">the sendMoney workflow runs for <span class="step-param">100</span> GBP to EUR</span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="Then" data-text="the full workflow span tree is recorded">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Then</span>
+  <span class="step-text">the full workflow span tree is recorded</span>
+  <span class="step-duration"></span>
+</div><div class="step-docs"><div class="doc-note">Total spans: 8</div><div class="doc-note">Span names: validate, fetchRate, getBalance, convert, executeTransfer, confirm, sendMoney, POST /api/transfer</div></div></div>
+    
+    
+    <div class="trace-view collapsed">
+  <div class="trace-view-header" role="button" tabindex="0" aria-expanded="false">
+    <span>Spans</span>
+    <span class="trace-view-count">8</span>
+    <span class="chevron">&#9660;</span>
+  </div>
+  <div class="trace-view-content">
+    <div class="trace-view-axis">
+      <span>0ms</span>
+      <span>10.7ms</span>
+    </div>
+    <div class="trace-view-row">
+      <div class="trace-view-name" style="padding-left: 0px" title="POST /api/transfer">
+        <span class="trace-view-status-dot trace-view-status-ok"></span>
+        POST /api/transfer
+      </div>
+      <div class="trace-view-bar-container">
+        <div class="trace-view-bar trace-view-bar-ok" style="left: 0.00%; width: 100.00%" title="POST /api/transfer (10.7ms)">10.7ms</div>
+      </div>
+    </div>
+    <div class="trace-view-row">
+      <div class="trace-view-name" style="padding-left: 16px" title="sendMoney">
+        <span class="trace-view-status-dot trace-view-status-ok"></span>
+        sendMoney
+      </div>
+      <div class="trace-view-bar-container">
+        <div class="trace-view-bar trace-view-bar-ok" style="left: 58.24%; width: 26.66%" title="sendMoney (2.9ms)">2.9ms</div>
+      </div>
+    </div>
+    <div class="trace-view-row">
+      <div class="trace-view-name" style="padding-left: 32px" title="validate">
+        <span class="trace-view-status-dot trace-view-status-ok"></span>
+        validate
+      </div>
+      <div class="trace-view-bar-container">
+        <div class="trace-view-bar trace-view-bar-ok" style="left: 68.94%; width: 4.01%" title="validate (0.4ms)
+transfer.amount=100
+transfer.from_currency=GBP
+transfer.recipient_iban=DE89370400440532013000
+transfer.to_currency=EUR
+validation.status=passed">0.4ms</div>
+      </div>
+    </div>
+    <div class="trace-view-row">
+      <div class="trace-view-name" style="padding-left: 32px" title="fetchRate">
+        <span class="trace-view-status-dot trace-view-status-ok"></span>
+        fetchRate
+      </div>
+      <div class="trace-view-bar-container">
+        <div class="trace-view-bar trace-view-bar-ok" style="left: 75.14%; width: 1.91%" title="fetchRate (0.2ms)">0.2ms</div>
+      </div>
+    </div>
+    <div class="trace-view-row">
+      <div class="trace-view-name" style="padding-left: 32px" title="getBalance">
+        <span class="trace-view-status-dot trace-view-status-ok"></span>
+        getBalance
+      </div>
+      <div class="trace-view-bar-container">
+        <div class="trace-view-bar trace-view-bar-ok" style="left: 77.70%; width: 1.39%" title="getBalance (0.1ms)">0.1ms</div>
+      </div>
+    </div>
+    <div class="trace-view-row">
+      <div class="trace-view-name" style="padding-left: 32px" title="convert">
+        <span class="trace-view-status-dot trace-view-status-ok"></span>
+        convert
+      </div>
+      <div class="trace-view-bar-container">
+        <div class="trace-view-bar trace-view-bar-ok" style="left: 79.70%; width: 1.36%" title="convert (0.1ms)">0.1ms</div>
+      </div>
+    </div>
+    <div class="trace-view-row">
+      <div class="trace-view-name" style="padding-left: 32px" title="executeTransfer">
+        <span class="trace-view-status-dot trace-view-status-ok"></span>
+        executeTransfer
+      </div>
+      <div class="trace-view-bar-container">
+        <div class="trace-view-bar trace-view-bar-ok" style="left: 81.84%; width: 0.99%" title="executeTransfer (0.1ms)">0.1ms</div>
+      </div>
+    </div>
+    <div class="trace-view-row">
+      <div class="trace-view-name" style="padding-left: 32px" title="confirm">
+        <span class="trace-view-status-dot trace-view-status-ok"></span>
+        confirm
+      </div>
+      <div class="trace-view-bar-container">
+        <div class="trace-view-bar trace-view-bar-ok" style="left: 83.39%; width: 0.97%" title="confirm (0.1ms)">0.1ms</div>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+</div>
+
+<div class="scenario" id="scenario-68e3219a03b3">
+  <div class="scenario-header" role="button" tabindex="0" aria-expanded="true">
+    <div class="scenario-info">
+      <div class="scenario-title">
+        <span class="status-icon status-passed">✓</span>
+        <span class="scenario-name">records validation attributes on the validate span</span>
+      </div>
+      <div class="scenario-meta"></div>
+    </div>
+    <div class="scenario-actions">
+      <button class="copy-scenario-btn" onclick="copyScenarioAsMarkdown('scenario-68e3219a03b3')" aria-label="Copy scenario as markdown" title="Copy as Markdown"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      <button class="permalink-anchor" onclick="copyPermalink('scenario-68e3219a03b3')" aria-label="Copy link to scenario" title="Copy link">#</button>
+      <span class="scenario-duration"></span>
+    </div>
+  </div>
+  <div class="scenario-content">
+    
+    <div class="steps"><div class="step" data-keyword="Given" data-text="autotel uses TestSpanCollector for trace capture">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Given</span>
+  <span class="step-text">autotel uses TestSpanCollector for trace capture</span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="When" data-text="a 250 EUR to USD transfer is validated">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">When</span>
+  <span class="step-text">a <span class="step-param">250</span> EUR to USD transfer is validated</span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="Then" data-text="the validate span contains transfer attributes">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Then</span>
+  <span class="step-text">the validate span contains transfer attributes</span>
+  <span class="step-duration"></span>
+</div><div class="step-docs"><div class="doc-note">Validate span attributes: {
+  &quot;transfer.recipient_iban&quot;: &quot;GB29NWBK60161331926819&quot;,
+  &quot;transfer.amount&quot;: 250,
+  &quot;transfer.from_currency&quot;: &quot;EUR&quot;,
+  &quot;transfer.to_currency&quot;: &quot;USD&quot;,
+  &quot;validation.status&quot;: &quot;passed&quot;
+}</div></div></div>
+    
+    
+    <div class="trace-view collapsed">
+  <div class="trace-view-header" role="button" tabindex="0" aria-expanded="false">
+    <span>Spans</span>
+    <span class="trace-view-count">8</span>
+    <span class="chevron">&#9660;</span>
+  </div>
+  <div class="trace-view-content">
+    <div class="trace-view-axis">
+      <span>0ms</span>
+      <span>3.3ms</span>
+    </div>
+    <div class="trace-view-row">
+      <div class="trace-view-name" style="padding-left: 0px" title="POST /api/transfer">
+        <span class="trace-view-status-dot trace-view-status-ok"></span>
+        POST /api/transfer
+      </div>
+      <div class="trace-view-bar-container">
+        <div class="trace-view-bar trace-view-bar-ok" style="left: 0.00%; width: 91.35%" title="POST /api/transfer (3.0ms)">3.0ms</div>
+      </div>
+    </div>
+    <div class="trace-view-row">
+      <div class="trace-view-name" style="padding-left: 16px" title="sendMoney">
+        <span class="trace-view-status-dot trace-view-status-ok"></span>
+        sendMoney
+      </div>
+      <div class="trace-view-bar-container">
+        <div class="trace-view-bar trace-view-bar-ok" style="left: 64.80%; width: 35.20%" title="sendMoney (1.2ms)">1.2ms</div>
+      </div>
+    </div>
+    <div class="trace-view-row">
+      <div class="trace-view-name" style="padding-left: 32px" title="validate">
+        <span class="trace-view-status-dot trace-view-status-ok"></span>
+        validate
+      </div>
+      <div class="trace-view-bar-container">
+        <div class="trace-view-bar trace-view-bar-ok" style="left: 74.26%; width: 4.51%" title="validate (0.2ms)
+transfer.amount=250
+transfer.from_currency=EUR
+transfer.recipient_iban=GB29NWBK60161331926819
+transfer.to_currency=USD
+validation.status=passed">0.2ms</div>
+      </div>
+    </div>
+    <div class="trace-view-row">
+      <div class="trace-view-name" style="padding-left: 32px" title="fetchRate">
+        <span class="trace-view-status-dot trace-view-status-ok"></span>
+        fetchRate
+      </div>
+      <div class="trace-view-bar-container">
+        <div class="trace-view-bar trace-view-bar-ok" style="left: 80.29%; width: 3.15%" title="fetchRate (0.1ms)">0.1ms</div>
+      </div>
+    </div>
+    <div class="trace-view-row">
+      <div class="trace-view-name" style="padding-left: 32px" title="getBalance">
+        <span class="trace-view-status-dot trace-view-status-ok"></span>
+        getBalance
+      </div>
+      <div class="trace-view-bar-container">
+        <div class="trace-view-bar trace-view-bar-ok" style="left: 84.62%; width: 2.22%" title="getBalance (0.1ms)">0.1ms</div>
+      </div>
+    </div>
+    <div class="trace-view-row">
+      <div class="trace-view-name" style="padding-left: 32px" title="convert">
+        <span class="trace-view-status-dot trace-view-status-ok"></span>
+        convert
+      </div>
+      <div class="trace-view-bar-container">
+        <div class="trace-view-bar trace-view-bar-ok" style="left: 87.68%; width: 2.73%" title="convert (0.1ms)">0.1ms</div>
+      </div>
+    </div>
+    <div class="trace-view-row">
+      <div class="trace-view-name" style="padding-left: 32px" title="executeTransfer">
+        <span class="trace-view-status-dot trace-view-status-ok"></span>
+        executeTransfer
+      </div>
+      <div class="trace-view-bar-container">
+        <div class="trace-view-bar trace-view-bar-ok" style="left: 91.36%; width: 2.33%" title="executeTransfer (0.1ms)">0.1ms</div>
+      </div>
+    </div>
+    <div class="trace-view-row">
+      <div class="trace-view-name" style="padding-left: 32px" title="confirm">
+        <span class="trace-view-status-dot trace-view-status-ok"></span>
+        confirm
+      </div>
+      <div class="trace-view-bar-container">
+        <div class="trace-view-bar trace-view-bar-ok" style="left: 94.38%; width: 3.87%" title="confirm (0.1ms)">0.1ms</div>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+</div>
+  </div>
+</div>
+
+<div class="feature" id="feature-tests-unit-convert-currencystorytestts">
+  <div class="feature-header" role="button" tabindex="0" aria-expanded="true">
+    <button class="permalink-anchor" onclick="copyPermalink('feature-tests-unit-convert-currencystorytestts')" aria-label="Copy link to feature" title="Copy link">#</button>
+    <div class="feature-info">
+      <div class="feature-title">Convert Currency</div>
+      <div class="feature-path">tests/unit/convert-currency.story.test.ts</div>
+    </div>
+    <div class="feature-stats">
+      <span class="stat passed">✓ 3</span>
+      <span class="stat failed">✗ 0</span>
+      <span class="stat skipped">○ 0</span>
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="feature-content">
+    
+<div class="scenario" id="scenario-3d76d5a9bb5c">
+  <div class="scenario-header" role="button" tabindex="0" aria-expanded="true">
+    <div class="scenario-info">
+      <div class="scenario-title">
+        <span class="status-icon status-passed">✓</span>
+        <span class="scenario-name">converts 100 GBP to EUR at rate 1.17</span>
+      </div>
+      <div class="scenario-meta"></div>
+    </div>
+    <div class="scenario-actions">
+      <button class="copy-scenario-btn" onclick="copyScenarioAsMarkdown('scenario-3d76d5a9bb5c')" aria-label="Copy scenario as markdown" title="Copy as Markdown"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      <button class="permalink-anchor" onclick="copyPermalink('scenario-3d76d5a9bb5c')" aria-label="Copy link to scenario" title="Copy link">#</button>
+      <span class="scenario-duration"></span>
+    </div>
+  </div>
+  <div class="scenario-content">
+    <div class="story-docs"><div class="doc-tag"><span class="doc-tag-item">conversion</span></div></div>
+    <div class="steps"><div class="step" data-keyword="Given" data-text="a balance of £500 and an exchange rate of 1.17">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Given</span>
+  <span class="step-text">a balance of £<span class="step-param">500</span> and an exchange rate of <span class="step-param">1.17</span></span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="When" data-text="100 GBP is converted to EUR">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">When</span>
+  <span class="step-text"><span class="step-param">100</span> GBP is converted to EUR</span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="Then" data-text="it returns €117.00">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Then</span>
+  <span class="step-text">it returns €<span class="step-param">117.00</span></span>
+  <span class="step-duration"></span>
+</div></div>
+    
+    
+    
+  </div>
+</div>
+
+<div class="scenario" id="scenario-122d41c9cfa8">
+  <div class="scenario-header" role="button" tabindex="0" aria-expanded="true">
+    <div class="scenario-info">
+      <div class="scenario-title">
+        <span class="status-icon status-passed">✓</span>
+        <span class="scenario-name">returns InsufficientFundsError when balance too low</span>
+      </div>
+      <div class="scenario-meta"></div>
+    </div>
+    <div class="scenario-actions">
+      <button class="copy-scenario-btn" onclick="copyScenarioAsMarkdown('scenario-122d41c9cfa8')" aria-label="Copy scenario as markdown" title="Copy as Markdown"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      <button class="permalink-anchor" onclick="copyPermalink('scenario-122d41c9cfa8')" aria-label="Copy link to scenario" title="Copy link">#</button>
+      <span class="scenario-duration"></span>
+    </div>
+  </div>
+  <div class="scenario-content">
+    <div class="story-docs"><div class="doc-tag"><span class="doc-tag-item">conversion</span></div></div>
+    <div class="steps"><div class="step" data-keyword="Given" data-text="a balance of £500 but wanting to send £1000">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Given</span>
+  <span class="step-text">a balance of £<span class="step-param">500</span> but wanting to send £<span class="step-param">1000</span></span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="When" data-text="1000 GBP is converted to EUR">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">When</span>
+  <span class="step-text"><span class="step-param">1000</span> GBP is converted to EUR</span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="Then" data-text="it returns InsufficientFundsError with required and available amounts">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Then</span>
+  <span class="step-text">it returns InsufficientFundsError with required and available amounts</span>
+  <span class="step-duration"></span>
+</div></div>
+    
+    
+    
+  </div>
+</div>
+
+<div class="scenario" id="scenario-8b22659a86f6">
+  <div class="scenario-header" role="button" tabindex="0" aria-expanded="true">
+    <div class="scenario-info">
+      <div class="scenario-title">
+        <span class="status-icon status-passed">✓</span>
+        <span class="scenario-name">rounds to 2 decimal places</span>
+      </div>
+      <div class="scenario-meta"></div>
+    </div>
+    <div class="scenario-actions">
+      <button class="copy-scenario-btn" onclick="copyScenarioAsMarkdown('scenario-8b22659a86f6')" aria-label="Copy scenario as markdown" title="Copy as Markdown"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      <button class="permalink-anchor" onclick="copyPermalink('scenario-8b22659a86f6')" aria-label="Copy link to scenario" title="Copy link">#</button>
+      <span class="scenario-duration"></span>
+    </div>
+  </div>
+  <div class="scenario-content">
+    <div class="story-docs"><div class="doc-tag"><span class="doc-tag-item">conversion</span></div></div>
+    <div class="steps"><div class="step" data-keyword="Given" data-text="a balance of £500 and an exchange rate of 1.17">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Given</span>
+  <span class="step-text">a balance of £<span class="step-param">500</span> and an exchange rate of <span class="step-param">1.17</span></span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="When" data-text="33 GBP is converted to EUR">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">When</span>
+  <span class="step-text"><span class="step-param">33</span> GBP is converted to EUR</span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="Then" data-text="the result is rounded to 38.61">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Then</span>
+  <span class="step-text">the result is rounded to <span class="step-param">38.61</span></span>
+  <span class="step-duration"></span>
+</div></div>
+    
+    
+    
+  </div>
+</div>
+  </div>
+</div>
+
+<div class="feature" id="feature-tests-unit-fetch-ratestorytestts">
+  <div class="feature-header" role="button" tabindex="0" aria-expanded="true">
+    <button class="permalink-anchor" onclick="copyPermalink('feature-tests-unit-fetch-ratestorytestts')" aria-label="Copy link to feature" title="Copy link">#</button>
+    <div class="feature-info">
+      <div class="feature-title">Fetch Rate</div>
+      <div class="feature-path">tests/unit/fetch-rate.story.test.ts</div>
+    </div>
+    <div class="feature-stats">
+      <span class="stat passed">✓ 3</span>
+      <span class="stat failed">✗ 0</span>
+      <span class="stat skipped">○ 0</span>
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="feature-content">
+    
+<div class="scenario" id="scenario-e0fd65517b5c">
+  <div class="scenario-header" role="button" tabindex="0" aria-expanded="true">
+    <div class="scenario-info">
+      <div class="scenario-title">
+        <span class="status-icon status-passed">✓</span>
+        <span class="scenario-name">returns exchange rate for a supported pair</span>
+      </div>
+      <div class="scenario-meta"></div>
+    </div>
+    <div class="scenario-actions">
+      <button class="copy-scenario-btn" onclick="copyScenarioAsMarkdown('scenario-e0fd65517b5c')" aria-label="Copy scenario as markdown" title="Copy as Markdown"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      <button class="permalink-anchor" onclick="copyPermalink('scenario-e0fd65517b5c')" aria-label="Copy link to scenario" title="Copy link">#</button>
+      <span class="scenario-duration"></span>
+    </div>
+  </div>
+  <div class="scenario-content">
+    <div class="story-docs"><div class="doc-tag"><span class="doc-tag-item">rates</span></div></div>
+    <div class="steps"><div class="step" data-keyword="Given" data-text="a rates API is available with GBP/EUR at 1.17">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Given</span>
+  <span class="step-text">a rates API is available with GBP/EUR at <span class="step-param">1.17</span></span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="When" data-text="the exchange rate for GBP to EUR is fetched">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">When</span>
+  <span class="step-text">the exchange rate for GBP to EUR is fetched</span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="Then" data-text="it returns the correct rate of 1.17">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Then</span>
+  <span class="step-text">it returns the correct rate of <span class="step-param">1.17</span></span>
+  <span class="step-duration"></span>
+</div></div>
+    
+    
+    
+  </div>
+</div>
+
+<div class="scenario" id="scenario-1c105685b5de">
+  <div class="scenario-header" role="button" tabindex="0" aria-expanded="true">
+    <div class="scenario-info">
+      <div class="scenario-title">
+        <span class="status-icon status-passed">✓</span>
+        <span class="scenario-name">returns RateUnavailableError when rates API fails</span>
+      </div>
+      <div class="scenario-meta"></div>
+    </div>
+    <div class="scenario-actions">
+      <button class="copy-scenario-btn" onclick="copyScenarioAsMarkdown('scenario-1c105685b5de')" aria-label="Copy scenario as markdown" title="Copy as Markdown"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      <button class="permalink-anchor" onclick="copyPermalink('scenario-1c105685b5de')" aria-label="Copy link to scenario" title="Copy link">#</button>
+      <span class="scenario-duration"></span>
+    </div>
+  </div>
+  <div class="scenario-content">
+    <div class="story-docs"><div class="doc-tag"><span class="doc-tag-item">rates</span></div></div>
+    <div class="steps"><div class="step" data-keyword="Given" data-text="the rates API is down">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Given</span>
+  <span class="step-text">the rates API is down</span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="When" data-text="the exchange rate is fetched">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">When</span>
+  <span class="step-text">the exchange rate is fetched</span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="Then" data-text="it returns a RateUnavailableError">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Then</span>
+  <span class="step-text">it returns a RateUnavailableError</span>
+  <span class="step-duration"></span>
+</div></div>
+    
+    
+    
+  </div>
+</div>
+
+<div class="scenario" id="scenario-57f1fa924074">
+  <div class="scenario-header" role="button" tabindex="0" aria-expanded="true">
+    <div class="scenario-info">
+      <div class="scenario-title">
+        <span class="status-icon status-passed">✓</span>
+        <span class="scenario-name">returns RateUnavailableError when pair is missing from the matrix</span>
+      </div>
+      <div class="scenario-meta"></div>
+    </div>
+    <div class="scenario-actions">
+      <button class="copy-scenario-btn" onclick="copyScenarioAsMarkdown('scenario-57f1fa924074')" aria-label="Copy scenario as markdown" title="Copy as Markdown"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      <button class="permalink-anchor" onclick="copyPermalink('scenario-57f1fa924074')" aria-label="Copy link to scenario" title="Copy link">#</button>
+      <span class="scenario-duration"></span>
+    </div>
+  </div>
+  <div class="scenario-content">
+    <div class="story-docs"><div class="doc-tag"><span class="doc-tag-item">rates</span></div></div>
+    <div class="steps"><div class="step" data-keyword="Given" data-text="the rates matrix has no entry for GBP to USD">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Given</span>
+  <span class="step-text">the rates matrix has no entry for GBP to USD</span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="When" data-text="the exchange rate for GBP to USD is fetched">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">When</span>
+  <span class="step-text">the exchange rate for GBP to USD is fetched</span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="Then" data-text="it returns RateUnavailableError for the missing pair">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Then</span>
+  <span class="step-text">it returns RateUnavailableError for the missing pair</span>
+  <span class="step-duration"></span>
+</div></div>
+    
+    
+    
+  </div>
+</div>
+  </div>
+</div>
+
+<div class="feature" id="feature-tests-unit-send-money-workflowstorytestts">
+  <div class="feature-header" role="button" tabindex="0" aria-expanded="true">
+    <button class="permalink-anchor" onclick="copyPermalink('feature-tests-unit-send-money-workflowstorytestts')" aria-label="Copy link to feature" title="Copy link">#</button>
+    <div class="feature-info">
+      <div class="feature-title">Send Money Workflow</div>
+      <div class="feature-path">tests/unit/send-money-workflow.story.test.ts</div>
+    </div>
+    <div class="feature-stats">
+      <span class="stat passed">✓ 5</span>
+      <span class="stat failed">✗ 0</span>
+      <span class="stat skipped">○ 0</span>
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="feature-content">
+    
+<div class="scenario" id="scenario-4bf9d81723c6">
+  <div class="scenario-header" role="button" tabindex="0" aria-expanded="true">
+    <div class="scenario-info">
+      <div class="scenario-title">
+        <span class="status-icon status-passed">✓</span>
+        <span class="scenario-name">workflow overview</span>
+      </div>
+      <div class="scenario-meta"></div>
+    </div>
+    <div class="scenario-actions">
+      <button class="copy-scenario-btn" onclick="copyScenarioAsMarkdown('scenario-4bf9d81723c6')" aria-label="Copy scenario as markdown" title="Copy as Markdown"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      <button class="permalink-anchor" onclick="copyPermalink('scenario-4bf9d81723c6')" aria-label="Copy link to scenario" title="Copy link">#</button>
+      <span class="scenario-duration"></span>
+    </div>
+  </div>
+  <div class="scenario-content">
+    <div class="story-docs"><div class="doc-section doc-section-parsed">
+  <div class="doc-section-title">Money Transfer Workflow</div>
+  <div class="doc-section-content" data-markdown="RW5kLXRvLWVuZCUyMHRyYW5zZmVyJTIwc3RlcHMlMjBhbmQlMjBlcnJvciUyMGJyYW5jaGVzLg=="></div>
+</div><div class="doc-mermaid doc-mermaid-live">
+  <div class="doc-mermaid-title">Transfer Railway</div>
+  <pre class="mermaid">graph LR
+  Start([Start]) --&gt; validate
+  validate --&gt; fetchRate
+  fetchRate --&gt; getBalance
+  getBalance --&gt; convert
+  convert --&gt; executeTransfer
+  executeTransfer --&gt; confirm
+  confirm --&gt; End([End])
+  validate -- ValidationError --&gt; EV([Exit])
+  fetchRate -- RateUnavailableError --&gt; ER([Exit])
+  convert -- InsufficientFundsError --&gt; EI([Exit])
+  executeTransfer -- TransferRejected/ProviderUnavailable --&gt; ET([Exit])
+  confirm -- ConfirmationFailedError --&gt; EC([Exit])</pre>
+</div><div class="doc-code">
+  <div class="doc-code-header">
+    <span class="doc-code-label">Error Summary</span>
+    <span class="doc-code-lang">json</span>
+  </div>
+  <pre class="doc-code-content"><code class="language-json">{
+  &quot;steps&quot;: [
+    &quot;validate&quot;,
+    &quot;fetchRate&quot;,
+    &quot;getBalance&quot;,
+    &quot;convert&quot;,
+    &quot;executeTransfer&quot;,
+    &quot;confirm&quot;
+  ],
+  &quot;errorsByStep&quot;: {
+    &quot;validate&quot;: [
+      &quot;ValidationError&quot;
+    ],
+    &quot;fetchRate&quot;: [
+      &quot;RateUnavailableError&quot;
+    ],
+    &quot;convert&quot;: [
+      &quot;InsufficientFundsError&quot;
+    ],
+    &quot;executeTransfer&quot;: [
+      &quot;TransferRejectedError&quot;,
+      &quot;ProviderUnavailableError&quot;
+    ],
+    &quot;confirm&quot;: [
+      &quot;ConfirmationFailedError&quot;
+    ]
+  }
+}</code></pre>
+</div></div>
+    <div class="steps"></div>
+    
+    
+    
+  </div>
+</div>
+
+<div class="scenario" id="scenario-3a518b98d4dd">
+  <div class="scenario-header" role="button" tabindex="0" aria-expanded="true">
+    <div class="scenario-info">
+      <div class="scenario-title">
+        <span class="status-icon status-passed">✓</span>
+        <span class="scenario-name">happy path: send £100 GBP → EUR</span>
+      </div>
+      <div class="scenario-meta"></div>
+    </div>
+    <div class="scenario-actions">
+      <button class="copy-scenario-btn" onclick="copyScenarioAsMarkdown('scenario-3a518b98d4dd')" aria-label="Copy scenario as markdown" title="Copy as Markdown"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      <button class="permalink-anchor" onclick="copyPermalink('scenario-3a518b98d4dd')" aria-label="Copy link to scenario" title="Copy link">#</button>
+      <span class="scenario-duration"></span>
+    </div>
+  </div>
+  <div class="scenario-content">
+    <div class="story-docs"><div class="doc-tag"><span class="doc-tag-item">workflow</span></div></div>
+    <div class="steps"><div class="step" data-keyword="Given" data-text="a valid transfer request for £100 GBP to EUR with rate 1.17 and balance £10000">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Given</span>
+  <span class="step-text">a valid transfer request for £<span class="step-param">100</span> GBP to EUR with rate <span class="step-param">1.17</span> and balance £<span class="step-param">10000</span></span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="When" data-text="the workflow runs end-to-end">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">When</span>
+  <span class="step-text">the workflow runs end-to-end</span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="Then" data-text="the transfer completes with €117.00">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Then</span>
+  <span class="step-text">the transfer completes with €<span class="step-param">117.00</span></span>
+  <span class="step-duration"></span>
+</div><div class="step-docs"><div class="doc-code">
+  <div class="doc-code-header">
+    <span class="doc-code-label">Transfer Result</span>
+    <span class="doc-code-lang">json</span>
+  </div>
+  <pre class="doc-code-content"><code class="language-json">{
+  &quot;transferId&quot;: &quot;TXN-001&quot;,
+  &quot;convertedAmount&quot;: 117,
+  &quot;rate&quot;: 1.17
+}</code></pre>
+</div></div></div>
+    
+    
+    
+  </div>
+</div>
+
+<div class="scenario" id="scenario-66d6854c32c9">
+  <div class="scenario-header" role="button" tabindex="0" aria-expanded="true">
+    <div class="scenario-info">
+      <div class="scenario-title">
+        <span class="status-icon status-passed">✓</span>
+        <span class="scenario-name">exits early on validation error</span>
+      </div>
+      <div class="scenario-meta"></div>
+    </div>
+    <div class="scenario-actions">
+      <button class="copy-scenario-btn" onclick="copyScenarioAsMarkdown('scenario-66d6854c32c9')" aria-label="Copy scenario as markdown" title="Copy as Markdown"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      <button class="permalink-anchor" onclick="copyPermalink('scenario-66d6854c32c9')" aria-label="Copy link to scenario" title="Copy link">#</button>
+      <span class="scenario-duration"></span>
+    </div>
+  </div>
+  <div class="scenario-content">
+    <div class="story-docs"><div class="doc-tag"><span class="doc-tag-item">workflow</span></div></div>
+    <div class="steps"><div class="step" data-keyword="Given" data-text="an IBAN that is too short">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Given</span>
+  <span class="step-text">an IBAN that is too short</span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="When" data-text="the workflow runs">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">When</span>
+  <span class="step-text">the workflow runs</span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="Then" data-text="it exits at the validate step with ValidationError">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Then</span>
+  <span class="step-text">it exits at the validate step with ValidationError</span>
+  <span class="step-duration"></span>
+</div></div>
+    
+    
+    
+  </div>
+</div>
+
+<div class="scenario" id="scenario-7c0a42f6a66b">
+  <div class="scenario-header" role="button" tabindex="0" aria-expanded="true">
+    <div class="scenario-info">
+      <div class="scenario-title">
+        <span class="status-icon status-passed">✓</span>
+        <span class="scenario-name">exits early on rate unavailable</span>
+      </div>
+      <div class="scenario-meta"></div>
+    </div>
+    <div class="scenario-actions">
+      <button class="copy-scenario-btn" onclick="copyScenarioAsMarkdown('scenario-7c0a42f6a66b')" aria-label="Copy scenario as markdown" title="Copy as Markdown"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      <button class="permalink-anchor" onclick="copyPermalink('scenario-7c0a42f6a66b')" aria-label="Copy link to scenario" title="Copy link">#</button>
+      <span class="scenario-duration"></span>
+    </div>
+  </div>
+  <div class="scenario-content">
+    <div class="story-docs"><div class="doc-tag"><span class="doc-tag-item">workflow</span></div></div>
+    <div class="steps"><div class="step" data-keyword="Given" data-text="the rates API is down">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Given</span>
+  <span class="step-text">the rates API is down</span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="When" data-text="the workflow runs">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">When</span>
+  <span class="step-text">the workflow runs</span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="Then" data-text="it exits at the fetchRate step with RateUnavailableError">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Then</span>
+  <span class="step-text">it exits at the fetchRate step with RateUnavailableError</span>
+  <span class="step-duration"></span>
+</div></div>
+    
+    
+    
+  </div>
+</div>
+
+<div class="scenario" id="scenario-268e03445e67">
+  <div class="scenario-header" role="button" tabindex="0" aria-expanded="true">
+    <div class="scenario-info">
+      <div class="scenario-title">
+        <span class="status-icon status-passed">✓</span>
+        <span class="scenario-name">exits early on insufficient funds</span>
+      </div>
+      <div class="scenario-meta"></div>
+    </div>
+    <div class="scenario-actions">
+      <button class="copy-scenario-btn" onclick="copyScenarioAsMarkdown('scenario-268e03445e67')" aria-label="Copy scenario as markdown" title="Copy as Markdown"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      <button class="permalink-anchor" onclick="copyPermalink('scenario-268e03445e67')" aria-label="Copy link to scenario" title="Copy link">#</button>
+      <span class="scenario-duration"></span>
+    </div>
+  </div>
+  <div class="scenario-content">
+    <div class="story-docs"><div class="doc-tag"><span class="doc-tag-item">workflow</span></div></div>
+    <div class="steps"><div class="step" data-keyword="Given" data-text="the user has £50 but wants to send £100">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Given</span>
+  <span class="step-text">the user has £<span class="step-param">50</span> but wants to send £<span class="step-param">100</span></span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="When" data-text="the workflow runs">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">When</span>
+  <span class="step-text">the workflow runs</span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="Then" data-text="it exits at the convert step with InsufficientFundsError">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Then</span>
+  <span class="step-text">it exits at the convert step with InsufficientFundsError</span>
+  <span class="step-duration"></span>
+</div></div>
+    
+    
+    
+  </div>
+</div>
+  </div>
+</div>
+
+<div class="feature" id="feature-tests-unit-validate-transferstorytestts">
+  <div class="feature-header" role="button" tabindex="0" aria-expanded="true">
+    <button class="permalink-anchor" onclick="copyPermalink('feature-tests-unit-validate-transferstorytestts')" aria-label="Copy link to feature" title="Copy link">#</button>
+    <div class="feature-info">
+      <div class="feature-title">Validate Transfer</div>
+      <div class="feature-path">tests/unit/validate-transfer.story.test.ts</div>
+    </div>
+    <div class="feature-stats">
+      <span class="stat passed">✓ 4</span>
+      <span class="stat failed">✗ 0</span>
+      <span class="stat skipped">○ 0</span>
+      <span class="chevron">▼</span>
+    </div>
+  </div>
+  <div class="feature-content">
+    
+<div class="scenario" id="scenario-c0d15e0439cd">
+  <div class="scenario-header" role="button" tabindex="0" aria-expanded="true">
+    <div class="scenario-info">
+      <div class="scenario-title">
+        <span class="status-icon status-passed">✓</span>
+        <span class="scenario-name">accepts valid transfer input</span>
+      </div>
+      <div class="scenario-meta"></div>
+    </div>
+    <div class="scenario-actions">
+      <button class="copy-scenario-btn" onclick="copyScenarioAsMarkdown('scenario-c0d15e0439cd')" aria-label="Copy scenario as markdown" title="Copy as Markdown"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      <button class="permalink-anchor" onclick="copyPermalink('scenario-c0d15e0439cd')" aria-label="Copy link to scenario" title="Copy link">#</button>
+      <span class="scenario-duration"></span>
+    </div>
+  </div>
+  <div class="scenario-content">
+    <div class="story-docs"><div class="doc-tag"><span class="doc-tag-item">validation</span></div></div>
+    <div class="steps"><div class="step" data-keyword="Given" data-text="a user provides valid transfer details">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Given</span>
+  <span class="step-text">a user provides valid transfer details</span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="When" data-text="the input is validated">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">When</span>
+  <span class="step-text">the input is validated</span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="Then" data-text="validation succeeds with validated transfer data">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Then</span>
+  <span class="step-text">validation succeeds with validated transfer data</span>
+  <span class="step-duration"></span>
+</div></div>
+    
+    
+    
+  </div>
+</div>
+
+<div class="scenario" id="scenario-9dae3dcb8660">
+  <div class="scenario-header" role="button" tabindex="0" aria-expanded="true">
+    <div class="scenario-info">
+      <div class="scenario-title">
+        <span class="status-icon status-passed">✓</span>
+        <span class="scenario-name">rejects invalid IBAN</span>
+      </div>
+      <div class="scenario-meta"></div>
+    </div>
+    <div class="scenario-actions">
+      <button class="copy-scenario-btn" onclick="copyScenarioAsMarkdown('scenario-9dae3dcb8660')" aria-label="Copy scenario as markdown" title="Copy as Markdown"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      <button class="permalink-anchor" onclick="copyPermalink('scenario-9dae3dcb8660')" aria-label="Copy link to scenario" title="Copy link">#</button>
+      <span class="scenario-duration"></span>
+    </div>
+  </div>
+  <div class="scenario-content">
+    <div class="story-docs"><div class="doc-tag"><span class="doc-tag-item">validation</span></div></div>
+    <div class="steps"><div class="step" data-keyword="Given" data-text="a user provides an IBAN that is too short">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Given</span>
+  <span class="step-text">a user provides an IBAN that is too short</span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="When" data-text="the input is validated">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">When</span>
+  <span class="step-text">the input is validated</span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="Then" data-text="validation fails with a ValidationError">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Then</span>
+  <span class="step-text">validation fails with a ValidationError</span>
+  <span class="step-duration"></span>
+</div></div>
+    
+    
+    
+  </div>
+</div>
+
+<div class="scenario" id="scenario-e608ca83ce85">
+  <div class="scenario-header" role="button" tabindex="0" aria-expanded="true">
+    <div class="scenario-info">
+      <div class="scenario-title">
+        <span class="status-icon status-passed">✓</span>
+        <span class="scenario-name">rejects same source and target currency</span>
+      </div>
+      <div class="scenario-meta"></div>
+    </div>
+    <div class="scenario-actions">
+      <button class="copy-scenario-btn" onclick="copyScenarioAsMarkdown('scenario-e608ca83ce85')" aria-label="Copy scenario as markdown" title="Copy as Markdown"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      <button class="permalink-anchor" onclick="copyPermalink('scenario-e608ca83ce85')" aria-label="Copy link to scenario" title="Copy link">#</button>
+      <span class="scenario-duration"></span>
+    </div>
+  </div>
+  <div class="scenario-content">
+    <div class="story-docs"><div class="doc-tag"><span class="doc-tag-item">validation</span></div></div>
+    <div class="steps"><div class="step" data-keyword="Given" data-text="a user tries to transfer GBP to GBP">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Given</span>
+  <span class="step-text">a user tries to transfer GBP to GBP</span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="When" data-text="the input is validated">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">When</span>
+  <span class="step-text">the input is validated</span>
+  <span class="step-duration"></span>
+</div><div class="step" data-keyword="Then" data-text="validation fails — from and to currencies must differ">
+  <span class="step-status status-passed">✓</span>
+  <span class="step-keyword">Then</span>
+  <span class="step-text">validation fails — from and to currencies must differ</span>
+  <span class="step-duration"></span>
+</div></div>
+    
+    
+    
+  </div>
+</div>
+
+<div class="scenario" id="scenario-df1612a4dfc7">
+  <div class="scenario-header" role="button" tabindex="0" aria-expanded="true">
+    <div class="scenario-info">
+      <div class="scenario-title">
+        <span class="status-icon status-passed">✓</span>
+        <span class="scenario-name">spec by example — validation rules</span>
+      </div>
+      <div class="scenario-meta"></div>
+    </div>
+    <div class="scenario-actions">
+      <button class="copy-scenario-btn" onclick="copyScenarioAsMarkdown('scenario-df1612a4dfc7')" aria-label="Copy scenario as markdown" title="Copy as Markdown"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      <button class="permalink-anchor" onclick="copyPermalink('scenario-df1612a4dfc7')" aria-label="Copy link to scenario" title="Copy link">#</button>
+      <span class="scenario-duration"></span>
+    </div>
+  </div>
+  <div class="scenario-content">
+    <div class="story-docs"><div class="doc-tag"><span class="doc-tag-item">validation</span></div><div class="doc-table">
+  <div class="doc-table-label">Validation Examples</div>
+  <table>
+    <thead><tr><th>IBAN</th><th>Amount</th><th>From</th><th>To</th><th>Valid?</th><th>Reason</th></tr></thead>
+    <tbody><tr><td>bad</td><td>100</td><td>GBP</td><td>EUR</td><td>false</td><td>IBAN too short</td></tr><tr><td>DE89370400440532013000</td><td>-10</td><td>GBP</td><td>EUR</td><td>false</td><td>Negative amount</td></tr><tr><td>DE89370400440532013000</td><td>100</td><td>GBP</td><td>GBP</td><td>false</td><td>Same currency</td></tr><tr><td>DE89370400440532013000</td><td>100</td><td>GBP</td><td>EUR</td><td>true</td><td>All valid</td></tr></tbody>
+  </table>
+</div></div>
+    <div class="steps"></div>
+    
+    
+    
+  </div>
+</div>
+  </div>
+</div>
+      </div>
+    </div>
+  </div>
+  <script>
+// Theme management
+function getSystemTheme() {
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function getEffectiveTheme() {
+  const saved = localStorage.getItem('theme');
+  if (saved === 'dark' || saved === 'light') return saved;
+  return getSystemTheme();
+}
+
+function toggleTheme() {
+  const current = getEffectiveTheme();
+  const next = current === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('theme', next);
+  applyTheme(next);
+}
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  updateThemeIcon(theme);
+}
+
+function updateThemeIcon(theme) {
+  const btn = document.querySelector('.theme-toggle');
+  if (btn) {
+    btn.textContent = theme === 'dark' ? '\u2600\ufe0f' : '\ud83c\udf19';
+    btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+}
+
+function initTheme() {
+  const theme = getEffectiveTheme();
+  applyTheme(theme);
+
+  // Listen for system theme changes
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (!localStorage.getItem('theme')) {
+      applyTheme(e.matches ? 'dark' : 'light');
+    }
+  });
+}
+
+// Filter state
+var activeTags = new Set();
+var activeStatus = null;
+var activeDetailLevel = 'full';
+
+// Search functionality
+function initSearch() {
+  var input = document.querySelector('.search-input');
+  if (!input) return;
+
+  var debounceTimer;
+  input.addEventListener('input', function() {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(function() {
+      applyAllFilters();
+    }, 150);
+  });
+
+  // Clear search on Escape
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      e.target.value = '';
+      applyAllFilters();
+    }
+  });
+}
+
+// Tag filter
+function initTagFilter() {
+  var toggleBtn = document.querySelector('.tag-bar-toggle');
+  var tagBar = document.querySelector('.tag-bar');
+  if (toggleBtn && tagBar) {
+    toggleBtn.addEventListener('click', function() {
+      var isCollapsed = tagBar.classList.toggle('tag-bar-collapsed');
+      toggleBtn.setAttribute('aria-expanded', String(!isCollapsed));
+    });
+  }
+
+  document.querySelectorAll('.tag-pill').forEach(function(pill) {
+    pill.addEventListener('click', function() {
+      var tag = pill.dataset.tag;
+      if (activeTags.has(tag)) {
+        activeTags.delete(tag);
+        pill.classList.remove('active');
+        pill.setAttribute('aria-pressed', 'false');
+      } else {
+        activeTags.add(tag);
+        pill.classList.add('active');
+        pill.setAttribute('aria-pressed', 'true');
+      }
+      updateTagBarState();
+      applyAllFilters();
+    });
+  });
+
+  var clearBtn = document.querySelector('.tag-bar-clear');
+  if (clearBtn) {
+    clearBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      activeTags.clear();
+      document.querySelectorAll('.tag-pill.active').forEach(function(p) {
+        p.classList.remove('active');
+        p.setAttribute('aria-pressed', 'false');
+      });
+      updateTagBarState();
+      applyAllFilters();
+    });
+  }
+}
+
+function updateTagBarState() {
+  var clearBtn = document.querySelector('.tag-bar-clear');
+  var countBadge = document.querySelector('.tag-bar-count');
+  if (clearBtn) {
+    clearBtn.style.display = activeTags.size > 0 ? '' : 'none';
+  }
+  if (countBadge) {
+    countBadge.textContent = activeTags.size > 0 ? activeTags.size + ' selected' : '';
+  }
+}
+
+// Status filter (clickable summary cards)
+function initStatusFilter() {
+  document.querySelectorAll('.summary-card').forEach(function(card) {
+    card.style.cursor = 'pointer';
+    if (!card.classList.contains('passed') && !card.classList.contains('failed') && !card.classList.contains('skipped')) {
+      card.addEventListener('click', function() {
+        activeStatus = null;
+        document.querySelectorAll('.summary-card').forEach(function(c) { c.classList.remove('status-active'); });
+        applyAllFilters();
+      });
+      return;
+    }
+    card.addEventListener('click', function() {
+      var status = card.classList.contains('passed') ? 'passed' :
+                   card.classList.contains('failed') ? 'failed' : 'skipped';
+      if (activeStatus === status) {
+        activeStatus = null;
+        card.classList.remove('status-active');
+      } else {
+        activeStatus = status;
+        document.querySelectorAll('.summary-card').forEach(function(c) { c.classList.remove('status-active'); });
+        card.classList.add('status-active');
+      }
+      applyAllFilters();
+    });
+  });
+}
+
+// Unified filter: composes search + tags + status
+function applyAllFilters() {
+  var searchInput = document.querySelector('.search-input');
+  var searchQuery = searchInput ? searchInput.value.toLowerCase().trim() : '';
+  var features = document.querySelectorAll('.feature');
+  var visibleCount = 0;
+  var totalCount = 0;
+
+  features.forEach(function(feature) {
+    var scenarios = feature.querySelectorAll('.scenario');
+    var featureVisible = 0;
+
+    scenarios.forEach(function(scenario) {
+      totalCount++;
+      var title = (scenario.querySelector('.scenario-title') || {}).textContent || '';
+      title = title.toLowerCase();
+      var tags = Array.from(scenario.querySelectorAll('.scenario-meta .tag')).map(function(t) { return t.textContent.toLowerCase(); });
+      var steps = Array.from(scenario.querySelectorAll('.step-text')).map(function(s) { return s.textContent.toLowerCase(); });
+      var statusEl = scenario.querySelector('.status-icon');
+      var status = statusEl && statusEl.classList.contains('status-passed') ? 'passed' :
+                   statusEl && statusEl.classList.contains('status-failed') ? 'failed' :
+                   statusEl && statusEl.classList.contains('status-skipped') ? 'skipped' : 'pending';
+
+      var matchesSearch = !searchQuery ||
+        title.includes(searchQuery) ||
+        tags.some(function(t) { return t.includes(searchQuery); }) ||
+        steps.some(function(s) { return s.includes(searchQuery); });
+
+      var matchesTags = activeTags.size === 0 ||
+        tags.some(function(t) { return activeTags.has(t); });
+
+      var matchesStatus = !activeStatus ||
+        status === activeStatus ||
+        (activeStatus === 'skipped' && status === 'pending');
+
+      var visible = matchesSearch && matchesTags && matchesStatus;
+      scenario.style.display = visible ? '' : 'none';
+      if (visible) { visibleCount++; featureVisible++; }
+    });
+
+    feature.style.display = featureVisible > 0 ? '' : 'none';
+  });
+
+  updateFilterResults(visibleCount, totalCount);
+  syncTocVisibility();
+  writeUrlState();
+}
+
+function updateFilterResults(visible, total) {
+  var el = document.querySelector('.filter-results');
+  if (!el) return;
+  var searchInput = document.querySelector('.search-input');
+  var isFiltering = activeTags.size > 0 || activeStatus ||
+    (searchInput && searchInput.value.trim().length > 0);
+  el.style.display = isFiltering ? '' : 'none';
+  var vc = el.querySelector('.visible-count');
+  var tc = el.querySelector('.total-count');
+  if (vc) vc.textContent = visible;
+  if (tc) tc.textContent = total;
+}
+
+// Keyboard navigation
+var focusedScenarioIndex = -1;
+
+function getVisibleScenarios() {
+  return Array.from(document.querySelectorAll('.scenario')).filter(function(s) {
+    return s.style.display !== 'none' && s.closest('.feature').style.display !== 'none';
+  });
+}
+
+function focusScenario(index) {
+  var scenarios = getVisibleScenarios();
+  if (scenarios.length === 0) return;
+
+  // Remove previous focus
+  var prev = document.querySelector('.scenario-focused');
+  if (prev) prev.classList.remove('scenario-focused');
+
+  // Wrap around
+  if (index < 0) index = scenarios.length - 1;
+  if (index >= scenarios.length) index = 0;
+  focusedScenarioIndex = index;
+
+  var scenario = scenarios[index];
+  scenario.classList.add('scenario-focused');
+  scenario.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+}
+
+function showShortcutsOverlay() {
+  if (document.querySelector('.shortcuts-overlay')) return;
+  var overlay = document.createElement('div');
+  overlay.className = 'shortcuts-overlay';
+  overlay.innerHTML = '<div class="shortcuts-modal">' +
+    '<div class="shortcuts-title">Keyboard Shortcuts</div>' +
+    '<div class="shortcuts-grid">' +
+    '<kbd>j</kbd><span>Next scenario</span>' +
+    '<kbd>k</kbd><span>Previous scenario</span>' +
+    '<kbd>Enter</kbd><span>Expand/collapse scenario</span>' +
+    '<kbd>Escape</kbd><span>Collapse scenario / close</span>' +
+    '<kbd>/</kbd><span>Focus search</span>' +
+    '<kbd>?</kbd><span>Toggle this help</span>' +
+    '<kbd>e</kbd><span>Expand all</span>' +
+    '<kbd>c</kbd><span>Collapse all</span>' +
+    '<kbd>t</kbd><span>Toggle table of contents</span>' +
+    '</div></div>';
+  overlay.addEventListener('click', function(ev) {
+    if (ev.target === overlay) hideShortcutsOverlay();
+  });
+  document.body.appendChild(overlay);
+}
+
+function hideShortcutsOverlay() {
+  var overlay = document.querySelector('.shortcuts-overlay');
+  if (overlay) overlay.remove();
+}
+
+function initKeyboardShortcuts() {
+  document.addEventListener('keydown', function(e) {
+    var tag = e.target.tagName;
+    if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') {
+      if (e.key === 'Escape') {
+        e.target.blur();
+        if (e.target.classList.contains('search-input')) {
+          e.target.value = '';
+          applyAllFilters();
+        }
+      }
+      return;
+    }
+
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+    switch (e.key) {
+      case 'j':
+        e.preventDefault();
+        focusScenario(focusedScenarioIndex + 1);
+        break;
+      case 'k':
+        e.preventDefault();
+        focusScenario(focusedScenarioIndex - 1);
+        break;
+      case 'Enter':
+        e.preventDefault();
+        var scenarios = getVisibleScenarios();
+        if (focusedScenarioIndex >= 0 && focusedScenarioIndex < scenarios.length) {
+          var s = scenarios[focusedScenarioIndex];
+          var h = s.querySelector('.scenario-header');
+          if (h) toggleCollapse(h, s);
+        }
+        break;
+      case 'Escape':
+        if (document.querySelector('.shortcuts-overlay')) {
+          hideShortcutsOverlay();
+        } else {
+          var scenarios2 = getVisibleScenarios();
+          if (focusedScenarioIndex >= 0 && focusedScenarioIndex < scenarios2.length) {
+            var sc = scenarios2[focusedScenarioIndex];
+            if (!sc.classList.contains('collapsed')) {
+              sc.classList.add('collapsed');
+              var sh = sc.querySelector('.scenario-header');
+              if (sh) sh.setAttribute('aria-expanded', 'false');
+            }
+          }
+        }
+        break;
+      case '/':
+        e.preventDefault();
+        var input = document.querySelector('.search-input');
+        if (input) input.focus();
+        break;
+      case '?':
+        e.preventDefault();
+        if (document.querySelector('.shortcuts-overlay')) {
+          hideShortcutsOverlay();
+        } else {
+          showShortcutsOverlay();
+        }
+        break;
+      case 'e':
+        e.preventDefault();
+        expandAll();
+        break;
+      case 'c':
+        e.preventDefault();
+        collapseAll();
+        break;
+      case 't':
+        e.preventDefault();
+        if (typeof toggleToc === 'function') toggleToc();
+        break;
+    }
+  });
+}
+
+// Collapse/expand functionality
+function toggleCollapse(header, container) {
+  container?.classList.toggle('collapsed');
+  const isCollapsed = container?.classList.contains('collapsed');
+  header.setAttribute('aria-expanded', !isCollapsed);
+}
+
+function initCollapse() {
+  document.querySelectorAll('.feature-header').forEach(header => {
+    header.addEventListener('click', () => {
+      toggleCollapse(header, header.closest('.feature'));
+    });
+    header.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleCollapse(header, header.closest('.feature'));
+      }
+    });
+  });
+
+  document.querySelectorAll('.scenario-header').forEach(header => {
+    header.addEventListener('click', () => {
+      toggleCollapse(header, header.closest('.scenario'));
+    });
+    header.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleCollapse(header, header.closest('.scenario'));
+      }
+    });
+  });
+
+  document.querySelectorAll('.trace-view-header').forEach(header => {
+    header.addEventListener('click', () => {
+      toggleCollapse(header, header.closest('.trace-view'));
+    });
+    header.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleCollapse(header, header.closest('.trace-view'));
+      }
+    });
+  });
+}
+
+function expandAll() {
+  document.querySelectorAll('.feature, .scenario, .trace-view').forEach(el => {
+    el.classList.remove('collapsed');
+    const header = el.querySelector('.feature-header, .scenario-header, .trace-view-header');
+    header?.setAttribute('aria-expanded', 'true');
+  });
+}
+
+function collapseAll() {
+  document.querySelectorAll('.feature, .scenario, .trace-view').forEach(el => {
+    el.classList.add('collapsed');
+    const header = el.querySelector('.feature-header, .scenario-header, .trace-view-header');
+    header?.setAttribute('aria-expanded', 'false');
+  });
+}
+
+// Detail level toggle
+function toggleDetailLevel() {
+  activeDetailLevel = activeDetailLevel === 'full' ? 'minimal' : 'full';
+  document.documentElement.setAttribute('data-detail-level', activeDetailLevel);
+  updateDetailToggle();
+  writeUrlState();
+}
+
+function updateDetailToggle() {
+  var btn = document.querySelector('.detail-toggle');
+  if (btn) {
+    btn.textContent = activeDetailLevel === 'full' ? '\ud83d\udccb' : '\ud83d\udcc4';
+    btn.setAttribute('aria-label', activeDetailLevel === 'full' ? 'Hide documentation (minimal)' : 'Show documentation (full)');
+    btn.title = activeDetailLevel === 'full' ? 'Showing full detail' : 'Showing minimal detail';
+  }
+}
+
+function initDetailLevel() {
+  updateDetailToggle();
+}
+
+// URL state sync for shareable URLs
+function readUrlState() {
+  var params = new URLSearchParams(window.location.search);
+
+  var search = params.get('search');
+  if (search) {
+    var input = document.querySelector('.search-input');
+    if (input) input.value = search;
+  }
+
+  var tags = params.get('tags');
+  if (tags) {
+    tags.split(',').forEach(function(tag) {
+      var pill = document.querySelector('.tag-pill[data-tag="' + tag + '"]');
+      if (pill) {
+        activeTags.add(tag);
+        pill.classList.add('active');
+        pill.setAttribute('aria-pressed', 'true');
+      }
+    });
+    updateTagBarState();
+  }
+
+  var status = params.get('status');
+  if (status && ['passed', 'failed', 'skipped'].indexOf(status) !== -1) {
+    activeStatus = status;
+    var card = document.querySelector('.summary-card.' + status);
+    if (card) card.classList.add('status-active');
+  }
+
+  var detail = params.get('detail');
+  if (detail === 'minimal' || detail === 'full') {
+    activeDetailLevel = detail;
+    document.documentElement.setAttribute('data-detail-level', detail);
+    updateDetailToggle();
+  }
+}
+
+function writeUrlState() {
+  var params = new URLSearchParams();
+  var input = document.querySelector('.search-input');
+  var search = input ? input.value.trim() : '';
+  if (search) params.set('search', search);
+  if (activeTags.size > 0) params.set('tags', Array.from(activeTags).sort().join(','));
+  if (activeStatus) params.set('status', activeStatus);
+  if (activeDetailLevel !== 'full') params.set('detail', activeDetailLevel);
+
+  var qs = params.toString();
+  var url = window.location.pathname + (qs ? '?' + qs : '');
+  history.replaceState(null, '', url);
+}
+
+// Permalink copy
+function copyPermalink(anchorId) {
+  var url = location.origin + location.pathname + location.search + '#' + anchorId;
+  navigator.clipboard.writeText(url).then(function() {
+    var el = document.getElementById(anchorId);
+    if (el) showCopyToast(el);
+  });
+}
+
+function showCopyToast(el) {
+  var existing = el.querySelector('.copy-toast');
+  if (existing) existing.remove();
+  var toast = document.createElement('span');
+  toast.className = 'copy-toast';
+  toast.textContent = 'Copied!';
+  var header = el.querySelector('.feature-header, .scenario-header');
+  if (header) {
+    header.style.position = 'relative';
+    header.appendChild(toast);
+  }
+  setTimeout(function() { toast.remove(); }, 1500);
+}
+
+// Copy scenario as markdown
+function copyScenarioAsMarkdown(scenarioId) {
+  var scenario = document.getElementById(scenarioId);
+  if (!scenario) return;
+
+  var title = (scenario.querySelector('.scenario-name') || {}).textContent || '';
+  var steps = scenario.querySelectorAll('.step, .step.continuation');
+  var lines = ['### Scenario: ' + title.trim(), ''];
+
+  steps.forEach(function(step) {
+    var keyword = step.getAttribute('data-keyword') || '';
+    var text = step.getAttribute('data-text') || '';
+    lines.push('- **' + keyword + '** ' + text);
+  });
+
+  var errorBox = scenario.querySelector('.error-message');
+  if (errorBox) {
+    var errorText = errorBox.textContent || '';
+    lines.push('');
+    lines.push('> **Error:** ' + errorText.trim());
+  }
+
+  var md = lines.join('\n');
+  navigator.clipboard.writeText(md).then(function() {
+    showCopyToast(scenario);
+  });
+}
+
+// Hash scroll on load
+function initHashScroll() {
+  if (!location.hash) return;
+  var target = document.querySelector(location.hash);
+  if (!target) return;
+  var feature = target.closest('.feature');
+  if (feature && feature.classList.contains('collapsed')) {
+    feature.classList.remove('collapsed');
+    var fh = feature.querySelector('.feature-header');
+    if (fh) fh.setAttribute('aria-expanded', 'true');
+  }
+  if (target.classList.contains('collapsed')) {
+    target.classList.remove('collapsed');
+    var sh = target.querySelector('.scenario-header');
+    if (sh) sh.setAttribute('aria-expanded', 'true');
+  }
+  setTimeout(function() {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    target.classList.add('hash-highlight');
+  }, 100);
+}
+
+// Table of contents
+function toggleToc() {
+  var sidebar = document.querySelector('.toc-sidebar');
+  var wrapper = document.querySelector('.report-layout');
+  if (!sidebar || !wrapper) return;
+  var isMobile = window.matchMedia('(max-width: 767px)').matches;
+  if (isMobile) {
+    sidebar.classList.toggle('toc-mobile-open');
+  } else {
+    wrapper.classList.toggle('toc-hidden');
+    var hidden = wrapper.classList.contains('toc-hidden');
+    localStorage.setItem('toc-visible', String(!hidden));
+  }
+}
+
+function initToc() {
+  var sidebar = document.querySelector('.toc-sidebar');
+  if (!sidebar) return;
+
+  var saved = localStorage.getItem('toc-visible');
+  var wrapper = document.querySelector('.report-layout');
+  if (saved === 'false' && wrapper) {
+    wrapper.classList.add('toc-hidden');
+  }
+
+  // Active tracking via IntersectionObserver
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        var id = entry.target.id;
+        if (!id) return;
+        document.querySelectorAll('.toc-scenario, .toc-feature-toggle').forEach(function(el) {
+          el.classList.remove('toc-active');
+        });
+        var tocLink = sidebar.querySelector('a[href="#' + id + '"]');
+        if (tocLink) tocLink.classList.add('toc-active');
+      }
+    });
+  }, { rootMargin: '-10% 0px -80% 0px' });
+
+  document.querySelectorAll('.feature, .scenario').forEach(function(el) {
+    if (el.id) observer.observe(el);
+  });
+
+  // Click navigation: expand collapsed parents
+  sidebar.querySelectorAll('.toc-scenario').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      var hash = link.getAttribute('href');
+      if (!hash) return;
+      var target = document.querySelector(hash);
+      if (!target) return;
+      var feature = target.closest('.feature');
+      if (feature && feature.classList.contains('collapsed')) {
+        feature.classList.remove('collapsed');
+        var fh = feature.querySelector('.feature-header');
+        if (fh) fh.setAttribute('aria-expanded', 'true');
+      }
+      if (target.classList.contains('collapsed')) {
+        target.classList.remove('collapsed');
+        var sh = target.querySelector('.scenario-header');
+        if (sh) sh.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+}
+
+// Theme picker
+function initThemePicker() {
+  var picker = document.querySelector('.theme-picker');
+  if (!picker) return;
+
+  var saved = localStorage.getItem('report-theme');
+  if (saved) {
+    picker.value = saved;
+    switchReportTheme(saved);
+  }
+
+  picker.addEventListener('change', function(e) {
+    switchReportTheme(e.target.value);
+    localStorage.setItem('report-theme', e.target.value);
+  });
+}
+
+function switchReportTheme(name) {
+  document.querySelectorAll('style[data-theme-name]').forEach(function(s) {
+    s.disabled = s.dataset.themeName !== name;
+  });
+}
+
+// Sync TOC visibility with filters
+function syncTocVisibility() {
+  var sidebar = document.querySelector('.toc-sidebar');
+  if (!sidebar) return;
+
+  sidebar.querySelectorAll('.toc-scenario').forEach(function(link) {
+    var href = link.getAttribute('href');
+    if (!href) return;
+    var target = document.querySelector(href);
+    link.style.display = (target && target.style.display !== 'none') ? '' : 'none';
+  });
+
+  sidebar.querySelectorAll('.toc-feature').forEach(function(feature) {
+    var visibleScenarios = feature.querySelectorAll('.toc-scenario');
+    var anyVisible = Array.from(visibleScenarios).some(function(s) {
+      return s.style.display !== 'none';
+    });
+    feature.style.display = anyVisible ? '' : 'none';
+  });
+}
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
+  readUrlState();
+  initSearch();
+  initTagFilter();
+  initStatusFilter();
+  initKeyboardShortcuts();
+  initCollapse();
+  initDetailLevel();
+  applyAllFilters();
+  initHashScroll();
+  initToc();
+  initThemePicker();
+});
+</script>
+  <script type="module">
+  import hljs from "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/es/highlight.min.js";
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+  import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
+
+function parseMarkdownSections(marked) {
+  // Configure marked for safe output
+  marked.setOptions({
+    breaks: true,
+    gfm: true
+  });
+
+  document.querySelectorAll('.doc-section-content[data-markdown]').forEach(el => {
+    const encoded = el.getAttribute('data-markdown');
+    if (!encoded) return;
+
+    try {
+      const markdown = decodeURIComponent(atob(encoded));
+      // Use marked.parse and sanitize by escaping script tags
+      let html = marked.parse(markdown);
+      // Basic XSS prevention - remove script tags
+      html = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+      el.innerHTML = html;
+      el.removeAttribute('data-markdown');
+    } catch (e) {
+      console.warn('Failed to parse markdown:', e);
+    }
+  });
+}
+
+  hljs.highlightAll();
+  mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+  await mermaid.run({ querySelector: ".mermaid" });
+  parseMarkdownSections(marked);
+  </script>
+</body>
+</html>

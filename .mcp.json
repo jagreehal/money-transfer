@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "autotel": {
+      "command": "npx",
+      "args": ["autotel-mcp"],
+      "env": {
+        "AUTOTEL_BACKEND": "jaeger",
+        "JAEGER_BASE_URL": "http://localhost:16686"
+      }
+    },
+    "react-grab-mcp": {
+      "command": "npx",
+      "args": ["-y", "@react-grab/mcp", "--stdio"]
+    }
+  }
+}
