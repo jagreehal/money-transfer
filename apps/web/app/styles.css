@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-sans: "Geist", system-ui, -apple-system, sans-serif;
   --font-mono: "Geist Mono", ui-monospace, "SF Mono", monospace;
@@ -27,6 +29,31 @@
   --color-negative: oklch(53% 0.19 22);
   --color-negative-tint: oklch(96.5% 0.02 22);
   --color-negative-edge: oklch(86% 0.08 22);
+}
+
+/*
+ * Dark palette — mechanical lightness inversion of the light tokens
+ * (hue and chroma preserved). Bespoke tuning is AI-9.
+ */
+.dark {
+  --color-canvas: oklch(6% 0.003 250);
+  --color-surface: oklch(10% 0 0);
+  --color-sunken: oklch(2.8% 0.004 250);
+  --color-border: oklch(22% 0.004 250);
+  --color-border-strong: oklch(32% 0.006 250);
+
+  --color-ink: oklch(96% 0.02 250);
+  --color-text: oklch(82% 0.015 250);
+  --color-muted: oklch(68% 0.012 250);
+  --color-subtle: oklch(48% 0.008 250);
+
+  --color-accent: oklch(70% 0.13 254);
+  --color-accent-hover: oklch(78% 0.14 254);
+
+  --color-positive: oklch(68% 0.12 152);
+  --color-negative: oklch(68% 0.19 22);
+  --color-negative-tint: oklch(18% 0.04 22);
+  --color-negative-edge: oklch(36% 0.08 22);
 }
 
 html, body {
