@@ -11,6 +11,10 @@
         "AUTOTEL_BACKEND": "jaeger",
         "JAEGER_BASE_URL": "http://localhost:16686"
       }
+    },
+    "storybook": {
+      "type": "http",
+      "url": "http://localhost:6006/mcp"
     }
   }
 }
