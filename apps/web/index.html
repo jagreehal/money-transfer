@@ -4,8 +4,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Atlas Transfer — international money transfers at the mid-market rate." />
-    <meta name="color-scheme" content="light" />
-    <meta name="theme-color" content="#17182a" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f8f8fa" />
+    <!--
+      Theme bootstrap — MUST stay inline and blocking in <head> so the class
+      is on <html> before first paint. Any deferred/async alternative produces
+      a light→dark flash on dark-mode reload. See AI-5.
+    -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('theme');
+          var isOverride = stored === 'light' || stored === 'dark';
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var mode = isOverride ? stored : (prefersDark ? 'dark' : 'light');
+          var root = document.documentElement;
+          root.classList.toggle('dark', mode === 'dark');
+          root.classList.toggle('light', mode === 'light');
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', mode === 'dark' ? '#0c0d13' : '#f8f8fa');
+          window.__themeApplied = { theme: mode, source: isOverride ? 'override' : 'system' };
+        } catch (e) {}
+      })();
+    </script>
     <link
       rel="icon"
       type="image/svg+xml"

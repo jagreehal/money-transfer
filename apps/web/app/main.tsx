@@ -23,6 +23,19 @@ if (posthogKey) {
   })
 }
 
+// Populated by the synchronous theme bootstrap in index.html — we re-emit it
+// through PostHog here (not in the inline script) because PostHog loads async.
+declare global {
+  interface Window {
+    __themeApplied?: { theme: 'light' | 'dark'; source: 'system' | 'override' }
+  }
+}
+
+const themeApplied = window.__themeApplied
+if (themeApplied) {
+  posthog.capture('theme.applied', themeApplied)
+}
+
 function LiveClock() {
   const [now, setNow] = useState(() => new Date())
   useEffect(() => {
